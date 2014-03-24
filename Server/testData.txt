@@ -1,0 +1,11 @@
+{ "users" : [
+        ["user1", "passHash1"],
+        ["user2", "passHash2"],
+        ["user3", "passHash3"]
+    ],
+  "files" : [
+        ["user1", "u1_file1", "u1_file1hash"],
+        ["user1", "u1_file2", "u2_file2hash"],
+        ["user2", "u2_file1", "u2_file1hash"]
+    ]
+}
