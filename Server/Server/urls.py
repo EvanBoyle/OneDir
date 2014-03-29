@@ -13,5 +13,6 @@ urlpatterns = patterns('',
     #adjust path to reflect your directory to serve files from
     url(r'^Serve/(?P<path>.*)$', 'django.views.static.serve', {'document_root': '/home/hodor/OneDir/OneDir/Server/Files'}),
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^AuthTest/', 'DJServer.views.AuthTest', name='AuthTest'),
 
 )
