@@ -13,6 +13,10 @@ OneDir project for CS3240
   
   Get a token for a user:  POST localhost:8000/api-token-auth username=u password=p
   
+  Upload a file: POST localhost:8000/UploadFile with token and file set
+  
+  UploadDemo.py:  demo of how to call the upload file api
+  
   AuthTest.py: demonstrates making a ListFiles request with and without token
 
   resetTesting.py: demonstrates adding files with sql obtained from command "python manage.py sqlall DJServer"
