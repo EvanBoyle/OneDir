@@ -13,10 +13,12 @@ OneDir project for CS3240
   
   Get a token for a user:  POST localhost:8000/api-token-auth username=u password=p
   
-  AuthTest.py: demonstrates making a ListFiles request with and without tolken
+  AuthTest.py: demonstrates making a ListFiles request with and without token
+
+  resetTesting.py: demonstrates adding files with sql obtained from command "python manage.py sqlall DJServer"
+
   
-  
-  Summary:  Token based authentication is implemented and ready to be integrated in the client.  Endpoints are set up to list a users files, and download a specific file for a user.
+  Summary:  Token based authentication is implemented and ready to be integrated in the client.  Endpoints are set up to list a user's files, and download a specific file for a user.
   
   TODO: 
   
@@ -24,7 +26,7 @@ OneDir project for CS3240
     
       upload a file
       
-      compare users files with servers files
+      compare user's files with server's files
       
     create scripts that call the manager to reset and populate the database
     
@@ -33,5 +35,15 @@ OneDir project for CS3240
       
   
 /Client
+
   Watchdog client for file monitoring, fetching, and pushing.
-  Example will come shortly
+
+  watchdog.py: watches and outputs creation, deletion, and modification of files
+
+  watchdogTest.py: script to create, modify, delete, and move files for testing
+
+  TODO:
+
+    store values (such as path and type of change) in data structure
+        
+    integrate token based authentication
