@@ -4,11 +4,17 @@ OneDir
 OneDir project for CS3240
 
 /Server
+
   User management: localhost:8000/admin
+  
   Get a user's list of files: GET localhost:8000/ListFiles/user
+  
   Download a specific file for a user: GETlocalhost:8000/user/filename
+  
   Get a token for a user:  POST localhost:8000/api-token-auth username=u password=p
+  
   AuthTest.py: demonstrates making a ListFiles request with and without tolken
+  
   
   Summary:  Token based authentication is implemented and ready to be integrated in the client.  Endpoints are set up to list a users files, and download a specific file for a user.
   
