@@ -40,10 +40,10 @@ OneDir project for CS3240
 
   watchdog.py: watches and outputs creation, deletion, and modification of files
 
-  watchdogTest.py: script to create, modify, delete, and move files for testing
+  watchdogTest.py: script to create, modify, delete, and move files in local directory for testing
 
   TODO:
 
     store values (such as path and type of change) in data structure
-        
+
     integrate token based authentication
