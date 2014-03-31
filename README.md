@@ -13,11 +13,17 @@ OneDir project for CS3240
   Summary:  Token based authentication is implemented and ready to be integrated in the client.  Endpoints are set up to list a users files, and download a specific file for a user.
   
   TODO: 
+  
     create endpoints for the following:
+    
       upload a file
+      
       compare users files with servers files
+      
     create scripts that call the manager to reset and populate the database
+    
     create scripts to set up directory for user and populate with test files
+    
       
   
 /Client
