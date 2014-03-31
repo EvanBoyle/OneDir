@@ -9,7 +9,8 @@ urlpatterns = patterns('',
     # url(r'^blog/', include('blog.urls')),
 
     url(r'^OneDir/', 'DJServer.views.OneDir', name='OneDir'),
-    url(r'^GetFiles/(?P<user>\w{0,50})/$', 'DJServer.views.GetFiles', name='GetFiles'),
+    url(r'^ListFiles/(?P<user>\w{0,50})/$', 'DJServer.views.ListFiles', name='ListFiles'),
+    url(r'^GetFile/(?P<user>\w{0,50})/(?P<filename>.+)/$', 'DJServer.views.GetFile', name='GetFile'),
     #adjust path to reflect your directory to serve files from
     url(r'^Serve/(?P<path>.*)$', 'django.views.static.serve', {'document_root': '/home/hodor/OneDir/OneDir/Server/Files'}),
     url(r'^admin/', include(admin.site.urls)),

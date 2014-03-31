@@ -9,6 +9,8 @@ from rest_framework.decorators import api_view
 from django.shortcuts import get_object_or_404, render
 from models import File
 from django.core import serializers
+from django.shortcuts import redirect
+import urllib
 
 import json
 # Create your views here.
@@ -23,8 +25,16 @@ def OneDir(request):
 #     response_data['user']= user
 #     return HttpResponse(json.dumps(response_data), content_type="application/json")
 
+@api_view(['GET'])
 @csrf_exempt
-def GetFiles(request, user):
+def GetFile(request, user, filename):
+    return redirect('http://127.0.0.1:8000/Serve/'+user+'/'+filename)
+
+@api_view(['GET'])
+@csrf_exempt
+def ListFiles(request, user):
+    if not request.user.is_authenticated():
+        return HttpResponse('Unauthorized')
     query = File.objects.filter(name__username = user)
     user_files = query.values_list('fileName', 'id')
     newList = {}
