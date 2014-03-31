@@ -10,6 +10,7 @@ from django.shortcuts import get_object_or_404, render
 from models import File
 from django.core import serializers
 from django.shortcuts import redirect
+from django.core.files import File
 import urllib
 
 import json
@@ -24,6 +25,19 @@ def OneDir(request):
 #     response_data = {}
 #     response_data['user']= user
 #     return HttpResponse(json.dumps(response_data), content_type="application/json")
+
+#file prefix needs to be changed below to mactch the machine running DJServer
+
+@api_view(['POST'])
+@csrf_exempt
+def UploadFile(request):
+    uFile = File(request.FILES['file'])
+    uname = request.user.username
+    with open('/home/hodor/OneDir/OneDir/Server/Files/' + uname+'/' + uFile.name, 'w+') as destination:
+        for chunk in uFile.chunks():
+            destination.write(chunk)
+    return HttpResponse('successful upload')
+
 
 @api_view(['GET'])
 @csrf_exempt
