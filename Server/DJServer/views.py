@@ -7,11 +7,13 @@ from rest_framework import authtoken
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view
 from django.shortcuts import get_object_or_404, render
-from models import File
+from models import ODFile
 from django.core import serializers
 from django.shortcuts import redirect
 from django.core.files import File
 import urllib
+import hashlib
+import datetime
 
 import json
 # Create your views here.
@@ -33,9 +35,13 @@ def OneDir(request):
 def UploadFile(request):
     uFile = File(request.FILES['file'])
     uname = request.user.username
+    md5 = hashlib.md5()
     with open('/home/hodor/OneDir/OneDir/Server/Files/' + uname+'/' + uFile.name, 'w+') as destination:
         for chunk in uFile.chunks():
+            md5.update(chunk)
             destination.write(chunk)
+    f = ODFile(fileName=uFile.name.decode("utf-8"), name = request.user, fileHash=md5.hexdigest().decode("utf-8"))
+    f.save()
     return HttpResponse('successful upload')
 
 
