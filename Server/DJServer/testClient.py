@@ -11,7 +11,7 @@ user = """
 
 headers = {'content-type': 'application/json'}
 url = "127.0.0.1:8000/CreateUser"
-data = user;
+data = user
 
 r = requests.post(url, data=data, headers=headers)
 print r.status_code
