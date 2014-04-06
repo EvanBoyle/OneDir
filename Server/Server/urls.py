@@ -21,5 +21,3 @@ urlpatterns = patterns('',
     url(r'^ChangePassword/', 'DJServer.views.ChangePassword', name='ChangePassword'),
 
 )
-
-
