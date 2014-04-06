@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
 from django.core.context_processors import csrf
 from django.shortcuts import render_to_response
 from rest_framework import authtoken
@@ -69,3 +71,26 @@ def LoggedIn(request):
         return HttpResponse("User is currently logged in. User = " + request.user.username)
     else:
         return HttpResponse("User is NOT currently logged in.")
+
+@csrf_exempt
+def CreateUser(request):
+    # form = UserCreationForm(request.POST)
+    # if form.is_valid():
+    #     form.save()
+    #     return HttpResponse('User has been created.')
+    # return HttpResponse('User creation failed.')
+    un = request.POST['username']
+    email = request.POST['email']
+    pw = request.POST['password']
+    User.objects.create_user(un, email, pw).save()
+    return HttpResponse('User has been created.')
+
+@api_view(['POST'])
+@csrf_exempt
+def ChangePassword(request):
+    oldpw = request.POST['oldPass']
+    newpw = request.POST['newPass']
+    if request.user.check_password(oldpw):
+        request.user.set_password(newpw)
+        return HttpResponse('User password changed successfully.')
+    return HttpResponse('Old password is incorrect.')
