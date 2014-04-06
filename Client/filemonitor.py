@@ -1,4 +1,4 @@
-__authors__ = 'ta3fh', 'mmo7kd
+__authors__ = 'ta3fh', 'mmo7kd'
 
 import sys
 import time
