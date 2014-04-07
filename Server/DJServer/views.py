@@ -42,7 +42,7 @@ def UploadFile(request):
         for chunk in uFile.chunks():
             md5.update(chunk)
             destination.write(chunk)
-    f = ODFile(fileName=uFile.name.decode("utf-8"), name = request.user, fileHash=md5.hexdigest().decode("utf-8"))
+    f = ODFile(fileName=uFile.name.decode("utf-8"), name = request.user, fileHash=md5.hexdigest().decode("utf-8"), fileSize=uFile.size)
     f.save()
     return HttpResponse('successful upload')
 
@@ -57,7 +57,7 @@ def GetFile(request, user, filename):
 def ListFiles(request, user):
     if not request.user.is_authenticated():
         return HttpResponse('Unauthorized')
-    query = File.objects.filter(name__username = user)
+    query = File.objects.filter(owner__username = user)
     user_files = query.values_list('fileName', 'id')
     newList = {}
     for s in user_files:
