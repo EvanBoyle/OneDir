@@ -58,7 +58,7 @@ def ListFiles(request, user):
     if not request.user.is_authenticated():
         return HttpResponse('Unauthorized')
     query = File.objects.filter(owner__username = user)
-    user_files = query.values_list('fileName', 'id')
+    user_files = query.values_list('fileName', 'fileSize', 'fileHash', 'timestamp' )
     newList = {}
     for s in user_files:
         newList[s[1]] = s[0]
