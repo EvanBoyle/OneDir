@@ -16,8 +16,8 @@ urlpatterns = patterns('',
     url(r'^Serve/(?P<path>.*)$', 'django.views.static.serve', {'document_root': '/home/hodor/OneDir/OneDir/Server/Files'}),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^LoggedIn/', 'DJServer.views.LoggedIn', name='LoggedIn'),
-    url(r'^api-token-auth/', 'rest_framework.authtoken.views.obtain_auth_token')
+    url(r'^api-token-auth/', 'rest_framework.authtoken.views.obtain_auth_token'),
+    url(r'^CreateUser/', 'DJServer.views.CreateUser', name='CreateUser'),
+    url(r'^ChangePassword/', 'DJServer.views.ChangePassword', name='ChangePassword'),
 
 )
-
-
