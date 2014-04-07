@@ -24,7 +24,7 @@ class FileHandler(FileSystemEventHandler):
         basepath = os.path.dirname(__file__)
         filepath = os.path.abspath(os.path.join(basepath, "..", "clientLog.json"))
         f = open(filepath, "a")
-        f.writelines(json.dumps({'file': event.src_path, 'size': size, 'event': event.event_type}, sort_keys=True))
+        f.writelines(json.dumps({'filepath': event.src_path, 'size': size, 'event': event.event_type}, sort_keys=True))
         f.writelines("\n")
 
     def on_any_event(self, event):
