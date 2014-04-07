@@ -7,37 +7,28 @@ import json
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 
-change_list = []
-
 class FileHandler(FileSystemEventHandler):
     """
     Watches for events (creation, deletion, and modification of files), then prints the event type and path.
     """
-
+    
+    # dataDict = {}
     def process(self, event):
-        str1 = event.src_path
-        str2 = str1[-10:]
-        #print(str2)
-        if str2 != "updates.js":
-            print(event.src_path + ": " + event.event_type)
-            add_to_file(event.src_path, event.event_type)
+        size = -1
+        if os.path.isfile(event.src_path):
+            if event.event_type == "created" or event.event_type == "modified":
+                filename = event.src_path.replace("\\\\", "\\")
+                print filename
+                size = os.stat(filename).st_size
+        # print event.src_path + ": " + str(size) + " " + event.event_type
+        basepath = os.path.dirname(__file__)
+        filepath = os.path.abspath(os.path.join(basepath, "..", "clientLog.json"))
+        f = open(filepath, "a")
+        f.writelines(json.dumps({'file': event.src_path, 'size': size, 'event': event.event_type}, sort_keys=True))
+        f.writelines("\n")
 
     def on_any_event(self, event):
         self.process(event)
-
-#Adds file changes to a dictionary, which is then added to the master list change_list
-def add_to_file(src_path, event_type):
-    dataDict = {}
-    dataDict[src_path] = event_type
-    change_list.append(dataDict)
-
-#Dumps everything into the json file updates.js
-def json_dump(list_obj):
-    j = json.dumps(list_obj)
-    json_file = 'updates.js'
-    f2 = open(json_file, 'w')
-    print >> f2, j
-    f2.close()
 
 if __name__ == '__main__':
     if len(sys.argv) <= 1:
@@ -54,8 +45,7 @@ if __name__ == '__main__':
     try:
         print("Watching for changes...")
         while True:
-            time.sleep(1)   # set to 1 for testing purposes
-            json_dump(change_list)
+            time.sleep(60)
     except KeyboardInterrupt:
         observer.stop()
     observer.join()
