@@ -21,6 +21,7 @@ OneDir project for CS3240
 
   resetTesting.py: demonstrates adding files with sql obtained from command "python manage.py sqlall DJServer"
 
+  userTests.py: demonstrates user creation and password change
   
   Summary:  Token based authentication is implemented and ready to be integrated in the client.  Endpoints are set up to list a user's files, and download a specific file for a user.
   
@@ -42,9 +43,10 @@ OneDir project for CS3240
 
   Watchdog client for file monitoring, fetching, and pushing.
 
-  watchdog.py: watches and outputs creation, deletion, and modification of files
+  filemonitor.py: watches creation, deletion, and modification of files, and logs the file path, file size, and type of                   event to a JSON file.
 
-  watchdogTest.py: script to create, modify, delete, and move files in local directory for testing
+  watchdogTest.py: script to create, modify, delete, and move files in local directory for testing. Each change is   
+                   delayed by 2 seconds for testing purposes.
 
   TODO:
 
