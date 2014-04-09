@@ -16,7 +16,8 @@ from django.core.files import File
 import urllib
 import hashlib
 import datetime
-
+import os
+from django.core.serializers.json import DjangoJSONEncoder
 import json
 # Create your views here.
 
@@ -37,12 +38,17 @@ def OneDir(request):
 def UploadFile(request):
     uFile = File(request.FILES['file'])
     uname = request.user.username
+    path = request.DATA['path'];
+    query = ODFile.objects.filter(name=request.user, fileName = path+uFile.name).delete()
+
     md5 = hashlib.md5()
-    with open('/home/hodor/OneDir/OneDir/Server/Files/' + uname+'/' + uFile.name, 'w+') as destination:
+    if not os.path.exists('/home/hodor/OneDir/OneDir/Server/Files/'+ uname + '/'+ path):
+        os.makedirs('/home/hodor/OneDir/OneDir/Server/Files/'+ uname + '/'+ path)
+    with open('/home/hodor/OneDir/OneDir/Server/Files/' + uname+'/'+path+ uFile.name, 'w+') as destination:
         for chunk in uFile.chunks():
             md5.update(chunk)
             destination.write(chunk)
-    f = ODFile(fileName=uFile.name.decode("utf-8"), name = request.user, fileHash=md5.hexdigest().decode("utf-8"), fileSize=uFile.size)
+    f = ODFile(fileName=path+ uFile.name.decode("utf-8"), name = request.user, fileHash=md5.hexdigest().decode("utf-8"), fileSize=uFile.size)
     f.save()
     return HttpResponse('successful upload')
 
@@ -57,12 +63,12 @@ def GetFile(request, user, filename):
 def ListFiles(request, user):
     if not request.user.is_authenticated():
         return HttpResponse('Unauthorized')
-    query = File.objects.filter(owner__username = user)
+    query = ODFile.objects.filter(name__username = user)
     user_files = query.values_list('fileName', 'fileSize', 'fileHash', 'timestamp' )
     newList = {}
     for s in user_files:
-        newList[s[1]] = s[0]
-    return HttpResponse(json.dumps(newList), content_type="application/json")
+        newList[s[0]]= user_files
+    return HttpResponse(json.dumps(list(user_files), cls=DjangoJSONEncoder), content_type="application/json")
 
 @api_view(['GET'])
 @csrf_exempt
