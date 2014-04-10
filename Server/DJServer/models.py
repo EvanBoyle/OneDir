@@ -13,4 +13,4 @@ class ODFile(models.Model):
     name = models.ForeignKey(User) #This is actually user ID. Username cannot be used, because calling User.get_username() requires making an instance of User
     fileHash = models.CharField(max_length=256)
     fileSize = models.IntegerField()
-    timestamp = models.TimeField(auto_now=True, auto_now_add=True)
+    timestamp = models.DateTimeField( auto_now_add=True)
