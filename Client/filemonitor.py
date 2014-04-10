@@ -6,6 +6,9 @@ import os
 import json
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
+from views import *
+from django.views.decorators.csrf import csrf_exempt
+from rest_framework.decorators import api_view
 
 class FileHandler(FileSystemEventHandler):
     """
@@ -26,9 +29,40 @@ class FileHandler(FileSystemEventHandler):
         f = open(filepath, "a")
         f.writelines(json.dumps({'file': event.src_path, 'size': size, 'event': event.event_type}, sort_keys=True))
         f.writelines("\n")
+        check_local()
+        check_server()
 
     def on_any_event(self, event):
         self.process(event)
+
+
+def check_local():
+    filepath = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "clientLog.json"))
+    f = open(filepath, "r")
+    for line in f:
+        if line[2] == "created":
+            UploadFile(line)
+            #I know I need to change the line to a request and then send that to UploadFile, but I'm not sure how
+        if line[2] == "deleted":
+            #Here is where the code for deleting a file locally will go
+        if line[2] == "modified":
+            #Here is where the code for deleting a file locally will go
+            UploadFile(line)
+
+
+def check_server():
+    change_files = ListFiles()
+    for line in change_files:
+        if line[2] == "created":
+            UploadFile(line)
+            #I know I need to change the line to a request and then send that to UploadFile, but I'm not sure how
+        if line[2] == "deleted":
+            #Here is where the code for deleting a file will go
+        if line[2] == "modified":
+            #Here is where the code for deleting a file will go
+            UploadFile(line)
+
+
 
 if __name__ == '__main__':
     if len(sys.argv) <= 1:
@@ -42,6 +76,7 @@ if __name__ == '__main__':
     observer = Observer()
     observer.schedule(FileHandler(), path=path_name, recursive=True)
     observer.start()
+
     try:
         print("Watching for changes...")
         while True:
@@ -49,3 +84,4 @@ if __name__ == '__main__':
     except KeyboardInterrupt:
         observer.stop()
     observer.join()
+
