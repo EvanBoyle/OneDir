@@ -13,7 +13,6 @@ def initialize(t, un):
     token = t
     username = un
 
-
 def list_files():
     header = {}
     header['Authorization']= 'Token '+ token

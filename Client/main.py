@@ -4,6 +4,7 @@ __author__ = 'ta3fh', 'csh7kd'
 import requests
 import json
 import getpass
+import synchronization.py
 
 token = ''
 
@@ -49,6 +50,7 @@ if __name__ == '__main__':
             pw = getpass.getpass()
             if login(un, pw):
                 print '   Login successful.'
+                synchronization.initialize(token, username) # This authenticates checking the server for files
                 break
             print '   Login unsuccessful.'
 
