@@ -43,7 +43,11 @@ OneDir project for CS3240
 
   Watchdog client for file monitoring, fetching, and pushing.
 
+  main.py: User login and registration. This needs to be run through command prompt or terminal because of the way password prompts work.
+
   filemonitor.py: watches creation, deletion, and modification of files, and logs the file path, file size, and type of event to a JSON file.
+  
+  synchronization.py: Gets list of server files, compares it to client files, pulls files from server, and pushes files to server.
 
   watchdogTest.py: script to create, modify, delete, and move files in local directory for testing. Each change is delayed by 2 seconds for testing purposes.
 
