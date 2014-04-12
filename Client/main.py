@@ -4,7 +4,7 @@ __author__ = 'ta3fh', 'csh7kd'
 import requests
 import json
 import getpass
-import synchronization.py
+import synchronization
 
 token = ''
 
@@ -36,6 +36,19 @@ def register(username, email, password):
         global token
         token = getToken(username, password)
 
+#Not working currently because getting a token is returning a None type.
+def passwordchange(old_pw, new_pw, un):
+    header = {}
+    global token
+    token = getToken(un, old_pw)
+    header['Authorization']= 'Token '+ token
+    response = requests.post('http://127.0.0.1:8000/ChangePassword/', {'oldPass': old_pw, 'newPass': new_pw},
+                  headers=header)
+    if response.content == 'User password changed successfully.':
+        print ('   User password changed successfully.')
+    else:
+        print(' User password change was unsuccessful.')
+
 if __name__ == '__main__':
     print 'Welcome to OneDir!'
     input = raw_input('Enter 0 to login or 1 to register: ')
@@ -50,7 +63,7 @@ if __name__ == '__main__':
             pw = getpass.getpass()
             if login(un, pw):
                 print '   Login successful.'
-                synchronization.initialize(token, username) # This authenticates checking the server for files
+                synchronization.initialize(token, un) # This authenticates checking the server for files
                 break
             print '   Login unsuccessful.'
 
@@ -66,3 +79,27 @@ if __name__ == '__main__':
                 print '   Registration successful.'
                 break
             print('   Passwords do not match.')
+
+    input2 = raw_input('Enter 0 to view files or 1 to change password: ')
+    while input2 != '0' and input2 != '1':
+        print ('   Incorrect input.')
+        input2 = raw_input('Enter 0 to view files or 1 to change password: ')
+
+# View files
+    if input2 == '0':
+        print ('Files from server: ')
+        #ListFiles
+
+# Change password. Not working currently because getting a token is returning a None type.
+    if input2 == '1':
+        old_pw = getpass.getpass('Enter old password: ')
+        while old_pw != pw:
+            print('   Incorrect password.')
+            old_pw = getpass.getpass('Enter old password: ')
+        new_pw = getpass.getpass('Enter new password: ')
+        new_pw2 = getpass.getpass('Confirm new password: ')
+        while new_pw2 != new_pw:
+            print('   Passwords do not match.')
+            new_pw = getpass.getpass('Enter new password: ')
+            new_pw2 = getpass.getpass('Confirm new password: ')
+        passwordchange(old_pw, new_pw, un)

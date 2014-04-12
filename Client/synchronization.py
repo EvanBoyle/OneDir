@@ -1,8 +1,10 @@
 __author__ = 'ta3fh', 'csh7kd'
 
+import os
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "./Server.Server.settings")
 import requests
 import json
-from Server.DJServer.views import *
+# from Server.DJServer.views import *
 
 token = ''
 username = ''
@@ -28,14 +30,11 @@ def check_server():
     # For each client file, whatever the server doesn't have the client should push to the server
     for line in server_files:
         if line[2] == "created":
-            UploadFile(line)
-            #I know I need to change the line to a request and then send that to UploadFile, but I'm not sure how
+            pass
         if line[2] == "deleted":
-            #Here is where the code for deleting a file will go
             pass
         if line[2] == "modified":
-            #Here is where the code for deleting a file will go
-            UploadFile(line)
+            pass
 
 if __name__ == '__main__':
     pass
