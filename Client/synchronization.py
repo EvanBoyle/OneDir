@@ -9,7 +9,7 @@ import json
 token = ''
 username = ''
 
-def initialize(t, un):
+def initialize(t, un):  #Initialized in main.py to authenticate checking the server for files
     global token
     global username
     token = t
@@ -21,6 +21,15 @@ def list_files():
     header['content-type']='application/json'
     response = requests.get('http://127.0.0.1:8000/ListFiles/' + username, headers=header)
     return response.content
+
+def upload_file(path, file): #Haven't decided what parameters to pass
+    header = {}
+    header['Authorization']= 'Token '+ token
+    payload = {}
+    payload['path']= path
+    files = {'file': open(file, 'rb')}
+    response = requests.post('http://127.0.0.1:8000/UploadFile/', headers=header, files=files, data=payload)
+    print response.content
 
 def check_server():
     server_files = list_files()
