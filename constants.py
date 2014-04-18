@@ -13,6 +13,8 @@ p_passwords_dont_match = "Passwords don't match."
 p_incorrect_input = 'Incorrect input.'
 p_incorrect_password = 'Incorrect password.'
 p_listFiles_fail = 'Failed to retrieve list of files.'
+p_listFiles_nofiles = 'You currently have no files on the server.'
+p_listFiles_success = 'Your files on the server: '
 
 #HttpResponses used in Server/DJServer/views.py
 h_welcome_beta = 'Welcome to OneDir, Beta coming soon!'

@@ -53,9 +53,18 @@ def listfiles(un):
     header['Authorization']= 'Token '+ token
     response = requests.get('http://127.0.0.1:8000/ListFiles/' + un, headers=header)
     if response.content == constants.h_listFiles_fail:
-        print constants.p_listFiles_fail
+        print constants.indent(constants.p_listFiles_fail)
     else:
-        print response.content
+        json_data = json.loads(response.content)
+        if len(json_data) == 0:
+            print constants.indent(constants.p_listFiles_nofiles)
+        else:
+            print constants.indent(constants.p_listFiles_success)
+            i = 0
+            while i < len(json_data):
+                print 'File name: ' + json_data[i][0] +  ' | File size: ' + str(json_data[i][1]) + ' | Last updated: ' + json_data[i][3]
+                i += 1
+
 
 if __name__ == '__main__':
     print constants.p_welcome
@@ -98,7 +107,6 @@ if __name__ == '__main__':
 
 # View files
     if input2 == '0':
-        print ('Your files on the server: ')
         listfiles(un)
 
 # Change password
