@@ -22,13 +22,12 @@ def isLogged(token):
     header['Authorization']= 'Token ' + token
     header['content-type']='application/json'
     response = requests.get(constants.server_url + '/LoggedIn/',headers = header)
-    return response.startswith('User is currently logged in.')
+    return response.startswith(constants.h_loggedIn_true)
 
 def login(username, password):
     getToken(username, password)
     return token != 'Error'
 
-# TODO: Check if username already exists
 def register(username, email, password):
     response = requests.post(constants.server_url + '/CreateUser/', {'username': username, 'email': email,
                                                                    'password': password})
@@ -43,16 +42,16 @@ def passwordchange(old_pw, new_pw, un):
     header['Authorization']= 'Token '+ token
     response = requests.post(constants.server_url + '/ChangePassword/', {'oldPass': old_pw, 'newPass': new_pw},
                   headers=header)
-    if response.content == 'User password changed successfully.':
-        print ('   User password changed successfully.')
+    if response.content == constants.h_changePassword_success:
+        print constants.indent(constants.h_changePassword_success)
     else:
-        print(' User password change was unsuccessful.')
+        print constants.indent(constants.h_changePassword_fail)
 
 if __name__ == '__main__':
     print constants.p_welcome
     input = raw_input('Enter 0 to login or 1 to register: ')
     while input != '0' and input != '1':
-        print '   Incorrect input.'
+        print constants.indent(constants.p_incorrect_input)
         input = raw_input('Enter 0 to login or 1 to register: ')
 
     # Login
