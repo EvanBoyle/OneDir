@@ -3,6 +3,10 @@ OneDir
 
 OneDir project for CS3240
 
+  constants.py: Contains prompt responses and Httpresponses as fields to ensure that changes are global.
+  
+  clientLog.json: JSON dump of local file changes.
+
 /Server
 
   User management: localhost:8000/admin
