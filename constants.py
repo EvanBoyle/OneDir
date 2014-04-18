@@ -1,5 +1,8 @@
 __author__ = 'csh7kd'
 
+# Added constants.py, which contains prompt responses and httpResponses so that changes to these are global.
+# All HttpResponses and prompt reponses have been rewritten as fields in constants.py (words are the same as of file creation).
+
 #prompts used in Client/main.py
 p_welcome = 'Welcome to OneDir!'
 p_login_success = 'Login successful.'
