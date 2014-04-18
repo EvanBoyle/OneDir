@@ -18,6 +18,8 @@ import hashlib
 import datetime
 import os
 from django.core.serializers.json import DjangoJSONEncoder
+import sys
+sys.path.append("..")
 import constants
 import json
 # Create your views here.

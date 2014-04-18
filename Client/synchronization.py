@@ -3,6 +3,8 @@ __author__ = 'ta3fh', 'csh7kd'
 import os
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "./Server.Server.settings")
 import requests
+import sys
+sys.path.append("..")
 import constants
 import json
 # from Server.DJServer.views import *

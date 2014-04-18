@@ -5,6 +5,8 @@ import requests
 import json
 import getpass
 import synchronization
+import sys
+sys.path.append("..")
 import constants
 token = ''
 
