@@ -33,14 +33,11 @@ def register(username, email, password):
     response = requests.post('http://127.0.0.1:8000/CreateUser/', {'username': username, 'email': email,
                                                                    'password': password})
     if response.content == 'User has been created.':
-        global token
-        token = getToken(username, password)
+        login(username, password)
 
-#Not working currently because getting a token is returning a None type.
 def passwordchange(old_pw, new_pw, un):
+    login(un, old_pw)
     header = {}
-    global token
-    token = getToken(un, old_pw)
     header['Authorization']= 'Token '+ token
     response = requests.post('http://127.0.0.1:8000/ChangePassword/', {'oldPass': old_pw, 'newPass': new_pw},
                   headers=header)
@@ -87,7 +84,7 @@ if __name__ == '__main__':
 
 # View files
     if input2 == '0':
-        print ('Files from server: ')
+        print ('Your files on the server: ')
         #ListFiles
 
 # Change password. Not working currently because getting a token is returning a None type.

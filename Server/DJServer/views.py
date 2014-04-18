@@ -98,5 +98,6 @@ def ChangePassword(request):
     newpw = request.POST['newPass']
     if request.user.check_password(oldpw):
         request.user.set_password(newpw)
+        request.user.save()
         return HttpResponse('User password changed successfully.')
-    return HttpResponse('Old password is incorrect.')
+    return HttpResponse('Password change was unsuccessful.')
