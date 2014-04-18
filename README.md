@@ -3,6 +3,10 @@ OneDir
 
 OneDir project for CS3240
 
+  constants.py: Contains prompt responses and Httpresponses as fields to ensure that changes are global.
+  
+  clientLog.json: JSON dump of local file changes.
+
 /Server
 
   User management: localhost:8000/admin
@@ -29,7 +33,7 @@ OneDir project for CS3240
   
     create endpoints for the following:
     
-      upload a file
+      delete files
       
       compare user's files with server's files
       
@@ -53,6 +57,5 @@ OneDir project for CS3240
 
   TODO:
 
-    store values (such as path and type of change) in data structure
-
-    integrate token based authentication
+    compare local and server files and update client accordingly
+    
