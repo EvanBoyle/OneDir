@@ -39,7 +39,6 @@ def register(username, email, password):
     return False
 
 def passwordchange(old_pw, new_pw, un):
-    login(un, old_pw)
     header = {}
     header['Authorization']= 'Token '+ token
     response = requests.post(constants.server_url + '/ChangePassword/', {'oldPass': old_pw, 'newPass': new_pw},
@@ -48,6 +47,15 @@ def passwordchange(old_pw, new_pw, un):
         print constants.indent(constants.h_changePassword_success)
     else:
         print constants.indent(constants.h_changePassword_fail)
+
+def listfiles(un):
+    header = {}
+    header['Authorization']= 'Token '+ token
+    response = requests.get('http://127.0.0.1:8000/ListFiles/' + un, headers=header)
+    if response.content == constants.h_listFiles_fail:
+        print constants.p_listFiles_fail
+    else:
+        print response.content
 
 if __name__ == '__main__':
     print constants.p_welcome
@@ -91,7 +99,7 @@ if __name__ == '__main__':
 # View files
     if input2 == '0':
         print ('Your files on the server: ')
-        #ListFiles
+        listfiles(un)
 
 # Change password
     if input2 == '1':

@@ -65,7 +65,7 @@ def GetFile(request, user, filename):
 @csrf_exempt
 def ListFiles(request, user):
     if not request.user.is_authenticated():
-        return HttpResponse('Unauthorized')
+        return HttpResponse(constants.h_listFiles_fail)
     query = ODFile.objects.filter(name__username = user)
     user_files = query.values_list('fileName', 'fileSize', 'fileHash', 'timestamp' )
     newList = {}
