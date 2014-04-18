@@ -3,6 +3,7 @@ __author__ = 'ta3fh', 'csh7kd'
 import os
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "./Server.Server.settings")
 import requests
+import constants
 import json
 # from Server.DJServer.views import *
 
@@ -19,7 +20,7 @@ def list_files():
     header = {}
     header['Authorization']= 'Token '+ token
     header['content-type']='application/json'
-    response = requests.get('http://127.0.0.1:8000/ListFiles/' + username, headers=header)
+    response = requests.get(constants.server_url + '/ListFiles/' + username, headers=header)
     return response.content
 
 def upload_file(path, file): #Haven't decided what parameters to pass
@@ -28,7 +29,7 @@ def upload_file(path, file): #Haven't decided what parameters to pass
     payload = {}
     payload['path']= path
     files = {'file': open(file, 'rb')}
-    response = requests.post('http://127.0.0.1:8000/UploadFile/', headers=header, files=files, data=payload)
+    response = requests.post(constants.server_url + '/UploadFile/', headers=header, files=files, data=payload)
     print response.content
 
 def check_server():

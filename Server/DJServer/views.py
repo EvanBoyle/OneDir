@@ -18,11 +18,12 @@ import hashlib
 import datetime
 import os
 from django.core.serializers.json import DjangoJSONEncoder
+import constants
 import json
 # Create your views here.
 
 def OneDir(request):
-    return HttpResponse("Welcome to OneDir, Beta coming soon!")
+    return HttpResponse(constants.h_welcome_beta)
 
 
 # @csrf_exempt
@@ -50,13 +51,13 @@ def UploadFile(request):
             destination.write(chunk)
     f = ODFile(fileName=path+ uFile.name.decode("utf-8"), name = request.user, fileHash=md5.hexdigest().decode("utf-8"), fileSize=uFile.size)
     f.save()
-    return HttpResponse('successful upload')
+    return HttpResponse(constants.h_uploadFile_success)
 
 
 @api_view(['GET'])
 @csrf_exempt
 def GetFile(request, user, filename):
-    return redirect('http://127.0.0.1:8000/Serve/'+user+'/'+filename)
+    return redirect(constants.sever_url + '/Serve/'+user+'/'+filename)
 
 @api_view(['GET'])
 @csrf_exempt
@@ -74,9 +75,9 @@ def ListFiles(request, user):
 @csrf_exempt
 def LoggedIn(request):
     if request.user.is_authenticated():
-        return HttpResponse("User is currently logged in. User = " + request.user.username)
+        return HttpResponse(constants.h_loggedIn_true + ' User = ' + request.user.username)
     else:
-        return HttpResponse("User is NOT currently logged in.")
+        return HttpResponse(constants.h_loggedIn_false)
 
 @csrf_exempt
 def CreateUser(request):
@@ -89,7 +90,7 @@ def CreateUser(request):
     email = request.POST['email']
     pw = request.POST['password']
     User.objects.create_user(un, email, pw).save()
-    return HttpResponse('User has been created.')
+    return HttpResponse(constants.h_createUser_success)
 
 @api_view(['POST'])
 @csrf_exempt
@@ -99,5 +100,5 @@ def ChangePassword(request):
     if request.user.check_password(oldpw):
         request.user.set_password(newpw)
         request.user.save()
-        return HttpResponse('User password changed successfully.')
-    return HttpResponse('Password change was unsuccessful.')
+        return HttpResponse(constants.h_changePassword_success)
+    return HttpResponse(constants.h_changePassword_fail)
