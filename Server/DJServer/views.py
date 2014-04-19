@@ -1,21 +1,11 @@
-from django.shortcuts import render
 from django.http import HttpResponse
-from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
-from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
-from django.core.context_processors import csrf
-from django.shortcuts import render_to_response
-from rest_framework import authtoken
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view
-from django.shortcuts import get_object_or_404, render
 from models import ODFile
-from django.core import serializers
 from django.shortcuts import redirect
 from django.core.files import File
-import urllib
 import hashlib
-import datetime
 import os
 from django.core.serializers.json import DjangoJSONEncoder
 import sys
