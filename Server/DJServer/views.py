@@ -31,13 +31,13 @@ def OneDir(request):
 def UploadFile(request):
     uFile = File(request.FILES['file'])
     uname = request.user.username
-    path = request.DATA['path'];
+    path = request.DATA['path']
     query = ODFile.objects.filter(name=request.user, fileName = path+uFile.name).delete()
 
     md5 = hashlib.md5()
-    if not os.path.exists('/home/hodor/OneDir/OneDir/Server/Files/'+ uname + '/'+ path):
-        os.makedirs('/home/hodor/OneDir/OneDir/Server/Files/'+ uname + '/'+ path)
-    with open('/home/hodor/OneDir/OneDir/Server/Files/' + uname+'/'+path+ uFile.name, 'w+') as destination:
+    if not os.path.exists('../Files/'+ uname + '/'+ path):
+        os.makedirs('../Files/'+ uname + '/'+ path)
+    with open('../Files/' + uname+'/'+path+ uFile.name, 'w+') as destination:
         for chunk in uFile.chunks():
             md5.update(chunk)
             destination.write(chunk)

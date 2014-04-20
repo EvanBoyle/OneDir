@@ -13,7 +13,7 @@ urlpatterns = patterns('',
     url(r'^UploadFile/$', 'DJServer.views.UploadFile', name='UploadFile'),
     url(r'^GetFile/(?P<user>\w{0,50})/(?P<filename>.+)/$', 'DJServer.views.GetFile', name='GetFile'),
     #adjust path to reflect your directory to serve files from
-    url(r'^Serve/(?P<path>.*)$', 'django.views.static.serve', {'document_root': '/home/hodor/OneDir/OneDir/Server/Files'}),
+    url(r'^Serve/(?P<path>.*)$', 'django.views.static.serve', {'document_root': '../Files'}),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^LoggedIn/', 'DJServer.views.LoggedIn', name='LoggedIn'),
     url(r'^api-token-auth/', 'rest_framework.authtoken.views.obtain_auth_token'),

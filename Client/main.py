@@ -70,7 +70,10 @@ def listfiles(un):
 
 
 if __name__ == '__main__':
-    if len(sys.argv <= 1):
+
+    mySync = None
+
+    if len(sys.argv) <= 1:
         print 'main.py <sync>'
     else:
         if sys.argv[1] == 0:
@@ -94,7 +97,7 @@ if __name__ == '__main__':
                 pw = getpass.getpass()
                 if login(un, pw):
                     print constants.indent(constants.p_login_success)
-                    synchronization.initialize(token, un, sync) # This authenticates checking the server for files
+                    mySync = synchronization.Synchronization(token, un, sync) # This authenticates checking the server for files
                     break
                 print constants.indent(constants.p_login_fail)
 
@@ -115,7 +118,7 @@ if __name__ == '__main__':
                     print constants.indent(constants.p_passwords_dont_match)
 
         input2 = raw_input('Enter 0 to view files or 1 to change password: ')
-        while input2 != '0' and input2 != '1':
+        while input2 != '0' and input2 != '1' and input2 != '8' and input2 != '9':
             print constants.indent(constants.p_incorrect_input)
             input2 = raw_input('Enter 0 to view files or 1 to change password: ')
 
@@ -136,6 +139,9 @@ if __name__ == '__main__':
                 new_pw = getpass.getpass('Enter new password: ')
                 new_pw2 = getpass.getpass('Confirm new password: ')
             passwordchange(old_pw, new_pw, un)
+
+        if input2 == '9':
+            mySync.upload_file('test_up.txt')
 
     except KeyboardInterrupt:
         print constants.p_goodbye

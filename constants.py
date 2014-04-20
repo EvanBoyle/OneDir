@@ -19,7 +19,7 @@ p_goodbye = '\nThanks for using OneDir!'
 
 #HttpResponses used in Server/DJServer/views.py
 h_welcome_beta = 'Welcome to OneDir, Beta coming soon!'
-h_uploadFile_success = 'successful upload'
+h_uploadFile_success = 'Successful upload'
 h_loggedIn_true = 'User is currently logged in.'
 h_loggedIn_false = 'User is NOT currently logged in.'
 h_createUser_success = 'User has been created.'

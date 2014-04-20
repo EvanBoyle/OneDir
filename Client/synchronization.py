@@ -9,47 +9,52 @@ import constants
 import json
 # from Server.DJServer.views import *
 
-token = ''
-username = ''
-sync = False
 
-def initialize(t, un, s):  #Initialized in main.py to authenticate checking the server for files
-    global token
-    global username
-    global sync
-    token = t
-    username = un
-    sync = s
+class Synchronization:
 
-def list_files():
-    header = {}
-    header['Authorization']= 'Token '+ token
-    header['content-type']='application/json'
-    response = requests.get(constants.server_url + '/ListFiles/' + username, headers=header)
-    return response.content
+    def __init__(self, t, un, s):  # Initialized in main.py to authenticate checking the server for files
+        self.token = t
+        self.username = un
+        self.sync = s
 
-def upload_file(path, file): #Haven't decided what parameters to pass
-    header = {}
-    header['Authorization']= 'Token '+ token
-    payload = {}
-    payload['path']= path
-    files = {'file': open(file, 'rb')}
-    response = requests.post(constants.server_url + '/UploadFile/', headers=header, files=files, data=payload)
-    print response.content
+    def list_files(self):
+        header = {}
+        header['Authorization']= 'Token '+ self.token
+        header['content-type']='application/json'
+        response = requests.get(constants.server_url + '/ListFiles/' + self.username, headers=header)
+        return response.content
 
-def check_server():
-    server_files = list_files()
-    filepath = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "clientLog.json"))
-    client_files = open(filepath, "r")
-    # For each server file, whatever the client doesn't have the client should pull from the server
-    # For each client file, whatever the server doesn't have the client should push to the server
-    for line in server_files:
-        if line[2] == "created":
-            pass
-        if line[2] == "deleted":
-            pass
-        if line[2] == "modified":
-            pass
+    def upload_file(self, full_path): #Haven't decided what parameters to pass
+        header = {
+            'Authorization': 'Token ' + self.token
+        }
+        path = {
+            'path': full_path[:full_path.rfind('/') + 1]
+        }
+        files = {
+            'file': open('../Server/Files/' + full_path, 'rb')
+        }
+        response = requests.post(constants.server_url + '/UploadFile/', headers=header, files=files, data=path)
+        print response.content
+
+    def download_file(self, filename):
+        requests.get(constants.server_url + '/GetFile/' + self.username + '/' + filename)
+
+    def delete_file(self, filename):
+        #TODO: access deletion endpoint
+        pass
+
+    def check_server(self):
+        server_files = self.list_files()
+        filepath = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "clientLog.json"))
+        client_files = open(filepath, "r")
+        # For each server file, whatever the client doesn't have the client should pull from the server
+        # For each client file, whatever the server doesn't have the client should push to the server
+        for line in server_files:
+            if line[2] == "deleted":
+                self.delete_file(line[1])
+            if line[2] == "created":
+                self.upload_file(line[1])
 
 if __name__ == '__main__':
     pass
