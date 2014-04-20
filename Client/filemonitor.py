@@ -24,15 +24,15 @@ class FileHandler(FileSystemEventHandler):
         if os.path.isfile(event.src_path):
             if event.event_type == "created" or event.event_type == "modified":
                 filename = event.src_path.replace("\\\\", "\\")
-                #print filename
                 size = os.stat(filename).st_size
         # print event.src_path + ": " + str(size) + " " + event.event_type
         basepath = os.path.dirname(__file__)
         filepath = os.path.abspath(os.path.join(basepath, "..", "clientLog.json"))
 
-        f = open(filepath, "a")
-        f.writelines(json.dumps({'file': event.src_path, 'size': size, 'event': event.event_type, 'time': file_time}, sort_keys=True))
-        f.writelines("\n")
+        if '___' not in event.src_path and size is not -1:
+            f = open(filepath, "a")
+            f.writelines(json.dumps({'file': event.src_path, 'size': size, 'event': event.event_type, 'time': file_time}, sort_keys=True))
+            f.writelines("\n")
         #check_local()
         #check_server()
 
@@ -41,14 +41,9 @@ class FileHandler(FileSystemEventHandler):
 
 
 if __name__ == '__main__':
-    if len(sys.argv) <= 1:
-        path_name = '.'
-    else:
-        path_name = sys.argv[1]
-        if not os.path.exists(os.path.dirname(path_name)):
-            print("Path name does not exist. Default to current directory.")
-            path_name = '.'
 
+    path_name = '../Server/Files'
+    # print os.path.exists(os.path.dirname(path_name))
     observer = Observer()
     observer.schedule(FileHandler(), path=path_name, recursive=True)
     observer.start()

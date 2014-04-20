@@ -11,12 +11,15 @@ import json
 
 token = ''
 username = ''
+sync = False
 
-def initialize(t, un):  #Initialized in main.py to authenticate checking the server for files
+def initialize(t, un, s):  #Initialized in main.py to authenticate checking the server for files
     global token
     global username
+    global sync
     token = t
     username = un
+    sync = s
 
 def list_files():
     header = {}

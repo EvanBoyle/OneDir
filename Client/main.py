@@ -8,7 +8,10 @@ import synchronization
 import sys
 sys.path.append("..")
 import constants
+import sys
+import getopt
 token = ''
+sync = False
 
 def getToken(username, password):
     response = requests.post(constants.server_url + '/api-token-auth/', {'username': username, 'password' : password})
@@ -67,58 +70,72 @@ def listfiles(un):
 
 
 if __name__ == '__main__':
-    print constants.p_welcome
-    input = raw_input('Enter 0 to login or 1 to register: ')
-    while input != '0' and input != '1':
-        print constants.indent(constants.p_incorrect_input)
+    if len(sys.argv <= 1):
+        print 'main.py <sync>'
+    else:
+        if sys.argv[1] == 0:
+            print 'Auto synchronization off.'
+        if sys.argv[1] == 1:
+            print 'Auto synchronization on.'
+            global sync
+            sync = True
+
+    try:
+        print constants.p_welcome
         input = raw_input('Enter 0 to login or 1 to register: ')
+        while input != '0' and input != '1':
+            print constants.indent(constants.p_incorrect_input)
+            input = raw_input('Enter 0 to login or 1 to register: ')
 
-    # Login
-    if input == '0':
-        while True:
-            un = raw_input('Username: ')
-            pw = getpass.getpass()
-            if login(un, pw):
-                print constants.indent(constants.p_login_success)
-                synchronization.initialize(token, un) # This authenticates checking the server for files
-                break
-            print constants.indent(constants.p_login_fail)
-
-    # Register. Run main.py on command prompt because password prompts don't work in IDE.
-    if input == '1':
-        while True:
-            un = raw_input('Username: ')
-            email = raw_input('Email: ')
-            pw = getpass.getpass()
-            confirm = getpass.getpass('Confirm password: ')
-            if confirm == pw:
-                if register(un, email, pw):
-                    print constants.indent(constants.p_register_success)
+        # Login
+        if input == '0':
+            while True:
+                un = raw_input('Username: ')
+                pw = getpass.getpass()
+                if login(un, pw):
+                    print constants.indent(constants.p_login_success)
+                    synchronization.initialize(token, un, sync) # This authenticates checking the server for files
                     break
+                print constants.indent(constants.p_login_fail)
+
+        # Register. Run main.py on command prompt because password prompts don't work in IDE.
+        if input == '1':
+            while True:
+                un = raw_input('Username: ')
+                email = raw_input('Email: ')
+                pw = getpass.getpass()
+                confirm = getpass.getpass('Confirm password: ')
+                if confirm == pw:
+                    if register(un, email, pw):
+                        print constants.indent(constants.p_register_success)
+                        break
+                    else:
+                        print constants.indent(constants.p_register_fail) #username is already in use
                 else:
-                    print constants.indent(constants.p_register_fail) #username is already in use
-            else:
-                print constants.indent(constants.p_passwords_dont_match)
+                    print constants.indent(constants.p_passwords_dont_match)
 
-    input2 = raw_input('Enter 0 to view files or 1 to change password: ')
-    while input2 != '0' and input2 != '1':
-        print constants.indent(constants.p_incorrect_input)
         input2 = raw_input('Enter 0 to view files or 1 to change password: ')
+        while input2 != '0' and input2 != '1':
+            print constants.indent(constants.p_incorrect_input)
+            input2 = raw_input('Enter 0 to view files or 1 to change password: ')
 
-# View files
-    if input2 == '0':
-        listfiles(un)
+    # View files
+        if input2 == '0':
+            listfiles(un)
 
-# Change password
-    if input2 == '1':
-        old_pw = getpass.getpass('Enter old password: ')
-        while old_pw != pw:
-            print constants.indent(constants.p_incorrect_password)
+    # Change password
+        if input2 == '1':
             old_pw = getpass.getpass('Enter old password: ')
-        new_pw = getpass.getpass('Enter new password: ')
-        new_pw2 = getpass.getpass('Confirm new password: ')
-        while new_pw2 != new_pw:
-            print constants.indent(constants.p_passwords_dont_match)
+            while old_pw != pw:
+                print constants.indent(constants.p_incorrect_password)
+                old_pw = getpass.getpass('Enter old password: ')
             new_pw = getpass.getpass('Enter new password: ')
             new_pw2 = getpass.getpass('Confirm new password: ')
-        passwordchange(old_pw, new_pw, un)
+            while new_pw2 != new_pw:
+                print constants.indent(constants.p_passwords_dont_match)
+                new_pw = getpass.getpass('Enter new password: ')
+                new_pw2 = getpass.getpass('Confirm new password: ')
+            passwordchange(old_pw, new_pw, un)
+
+    except KeyboardInterrupt:
+        print constants.p_goodbye
