@@ -98,6 +98,7 @@ if __name__ == '__main__':
                 if login(un, pw):
                     print constants.indent(constants.p_login_success)
                     mySync = synchronization.Synchronization(token, un, sync) # This authenticates checking the server for files
+                    mySync.check_server()
                     break
                 print constants.indent(constants.p_login_fail)
 
@@ -117,31 +118,39 @@ if __name__ == '__main__':
                 else:
                     print constants.indent(constants.p_passwords_dont_match)
 
-        input2 = raw_input('Enter 0 to view files or 1 to change password: ')
-        while input2 != '0' and input2 != '1' and input2 != '8' and input2 != '9':
-            print constants.indent(constants.p_incorrect_input)
-            input2 = raw_input('Enter 0 to view files or 1 to change password: ')
+        while (True):
+            input2 = raw_input('Enter 1 to view files or 2 to change password: ')
+            while input2 != '0' and input2 != '1' and input2 != '2' and input2 != '8' and input2 != '9':
+                print constants.indent(constants.p_incorrect_input)
+                input2 = raw_input('Enter 1 to view files or 2 to change password: ')
 
-    # View files
-        if input2 == '0':
-            listfiles(un)
+            # Check for exit
+            if input2 == '0':
+                print constants.p_goodbye
+                exit()
 
-    # Change password
-        if input2 == '1':
-            old_pw = getpass.getpass('Enter old password: ')
-            while old_pw != pw:
-                print constants.indent(constants.p_incorrect_password)
+            # View files
+            if input2 == '1':
+                listfiles(un)
+
+            # Change password
+            if input2 == '2':
                 old_pw = getpass.getpass('Enter old password: ')
-            new_pw = getpass.getpass('Enter new password: ')
-            new_pw2 = getpass.getpass('Confirm new password: ')
-            while new_pw2 != new_pw:
-                print constants.indent(constants.p_passwords_dont_match)
+                while old_pw != pw:
+                    print constants.indent(constants.p_incorrect_password)
+                    old_pw = getpass.getpass('Enter old password: ')
                 new_pw = getpass.getpass('Enter new password: ')
                 new_pw2 = getpass.getpass('Confirm new password: ')
-            passwordchange(old_pw, new_pw, un)
+                while new_pw2 != new_pw:
+                    print constants.indent(constants.p_passwords_dont_match)
+                    new_pw = getpass.getpass('Enter new password: ')
+                    new_pw2 = getpass.getpass('Confirm new password: ')
+                passwordchange(old_pw, new_pw, un)
 
-        if input2 == '9':
-            mySync.upload_file('test_up.txt')
+
+
+            if input2 == '9':
+                mySync.upload_file('anivia2.mp3')
 
     except KeyboardInterrupt:
         print constants.p_goodbye

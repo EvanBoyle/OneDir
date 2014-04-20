@@ -49,7 +49,7 @@ def UploadFile(request):
 @api_view(['GET'])
 @csrf_exempt
 def GetFile(request, user, filename):
-    return redirect(constants.sever_url + '/Serve/'+user+'/'+filename)
+    return redirect(constants.server_url + '/Serve/'+user+'/'+filename)
 
 @api_view(['GET'])
 @csrf_exempt

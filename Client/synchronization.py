@@ -50,11 +50,12 @@ class Synchronization:
         client_files = open(filepath, "r")
         # For each server file, whatever the client doesn't have the client should pull from the server
         # For each client file, whatever the server doesn't have the client should push to the server
-        for line in server_files:
+        for line in client_files:
             if line[2] == "deleted":
                 self.delete_file(line[1])
-            if line[2] == "created":
+            else:
                 self.upload_file(line[1])
+
 
 if __name__ == '__main__':
     pass
