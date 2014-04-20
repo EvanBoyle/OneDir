@@ -31,7 +31,7 @@ class FileHandler(FileSystemEventHandler):
         # gets path relative to OneDir/Server/Files/. This means users are not allowed to create directories called OneDir!
         filepath = event.src_path[event.src_path.rfind('OneDir')+20:]
 
-        if '___' not in event.src_path and size is not -1:
+        if '___' not in event.src_path and (size != -1 or event.event_type == "deleted"):
             f = open(logfilepath, "a")
             f.writelines(json.dumps({'file': filepath, 'size': size, 'event': event.event_type, 'time': file_time}, sort_keys=True))
             f.writelines("\n")
