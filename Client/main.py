@@ -85,13 +85,20 @@ if __name__ == '__main__':
 
     try:
         print constants.p_welcome
-        input = raw_input('Enter 0 to login or 1 to register: ')
-        while input != '0' and input != '1':
+        input = raw_input('Enter 1 to login or 2 to register: ')
+
+	# Check for exit
+        if input == '0':
+	    print constants.p_goodbye
+            exit()
+
+        while input != '1' and input != '2':
             print constants.indent(constants.p_incorrect_input)
-            input = raw_input('Enter 0 to login or 1 to register: ')
+            input = raw_input('Enter 1 to login or 2 to register: ')
+
 
         # Login
-        if input == '0':
+        if input == '1':
             while True:
                 un = raw_input('Username: ')
                 pw = getpass.getpass()
@@ -103,7 +110,7 @@ if __name__ == '__main__':
                 print constants.indent(constants.p_login_fail)
 
         # Register. Run main.py on command prompt because password prompts don't work in IDE.
-        if input == '1':
+        if input == '2':
             while True:
                 un = raw_input('Username: ')
                 email = raw_input('Email: ')
@@ -119,10 +126,10 @@ if __name__ == '__main__':
                     print constants.indent(constants.p_passwords_dont_match)
 
         while (True):
-            input2 = raw_input('Enter 1 to view files or 2 to change password: ')
-            while input2 != '0' and input2 != '1' and input2 != '2' and input2 != '8' and input2 != '9':
+            input2 = raw_input('Enter 1 to view files, 2 to change password, or 3 to turn on auto sync: ')
+            while input2 != '0' and input2 != '1' and input2 != '2' and input2 != '3' and input2 != '8' and input2 != '9':
                 print constants.indent(constants.p_incorrect_input)
-                input2 = raw_input('Enter 1 to view files or 2 to change password: ')
+                input2 = raw_input('Enter 1 to view files, 2 to change password, or 3 to turn on auto sync: ')
 
             # Check for exit
             if input2 == '0':
@@ -147,7 +154,11 @@ if __name__ == '__main__':
                     new_pw2 = getpass.getpass('Confirm new password: ')
                 passwordchange(old_pw, new_pw, un)
 
-
+	    # Auto sync
+	    if input2 == '3':
+		print 'Auto synchronization on.'
+		global sync
+		sync = True
 
             if input2 == '9':
                 mySync.upload_file('anivia2.mp3')
