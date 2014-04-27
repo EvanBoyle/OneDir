@@ -45,6 +45,16 @@ def UploadFile(request):
     f.save()
     return HttpResponse(constants.h_uploadFile_success)
 
+@api_view(['DELETE'])
+@csrf_exempt
+def DeleteFile(request, user, filename):
+    print '../Files/'+user+'/'+filename
+    if os.path.isfile('../Files/'+user+'/'+filename):
+        os.remove('../Files/'+user+'/'+filename)
+        query = ODFile.objects.filter(name=request.user, fileName =filename).delete()
+        return HttpResponse('File deleted')
+    else:
+        return HttpResponse('No such file found')
 
 @api_view(['GET'])
 @csrf_exempt
