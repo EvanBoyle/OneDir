@@ -12,7 +12,10 @@ import sys
 sys.path.append("..")
 import constants
 import json
+import logging
 # Create your views here.
+
+logger = logging.getLogger('ActionLog')
 
 def OneDir(request):
     return HttpResponse(constants.h_welcome_beta)
@@ -29,11 +32,23 @@ def OneDir(request):
 @api_view(['POST'])
 @csrf_exempt
 def UploadFile(request):
+    #manipulating the header to get vars
     uFile = File(request.FILES['file'])
     uname = request.user.username
     path = request.DATA['path']
+
+    #logging
+    logDict = {}
+    logDict['User']= request.user.username
+    logDict['Action']= 'UploadFile'
+    logDict['HTTP']= 'POST'
+    logDict['File']= request.DATA['path']+uFile.name;
+    logger.info(json.dumps(logDict))
+
+    #deleting obj in db
     query = ODFile.objects.filter(name=request.user, fileName = path+uFile.name).delete()
 
+    #writing file and creating md5 hash
     md5 = hashlib.md5()
     if not os.path.exists('../Files/'+ uname + '/'+ path):
         os.makedirs('../Files/'+ uname + '/'+ path)
@@ -48,6 +63,13 @@ def UploadFile(request):
 @api_view(['DELETE'])
 @csrf_exempt
 def DeleteFile(request, user, filename):
+    logDict = {}
+    logDict['User']= request.user.username
+    logDict['Action']= 'DeleteFile'
+    logDict['HTTP']= 'DELETE'
+    logDict['File']= filename;
+    logger.info(json.dumps(logDict))
+
     print '../Files/'+user+'/'+filename
     if os.path.isfile('../Files/'+user+'/'+filename):
         os.remove('../Files/'+user+'/'+filename)
@@ -59,11 +81,26 @@ def DeleteFile(request, user, filename):
 @api_view(['GET'])
 @csrf_exempt
 def GetFile(request, user, filename):
+    logDict = {}
+    logDict['User']= request.user.username
+    logDict['Action']= 'GetFile'
+    logDict['HTTP']= 'GET'
+    logDict['File']= filename;
+    logger.info(json.dumps(logDict))
+
     return redirect(constants.server_url + '/Serve/'+user+'/'+filename)
 
 @api_view(['GET'])
 @csrf_exempt
 def ListFiles(request, user):
+    logDict = {}
+    logDict['User']= request.user.username
+    logDict['Action']= 'ListFiles'
+    logDict['HTTP']= 'GET'
+    logDict['File']= 'N/A'
+    logger.info(json.dumps(logDict))
+
+
     if not request.user.is_authenticated():
         return HttpResponse(constants.h_listFiles_fail)
     query = ODFile.objects.filter(name__username = user)
@@ -76,13 +113,27 @@ def ListFiles(request, user):
 @api_view(['GET'])
 @csrf_exempt
 def LoggedIn(request):
+    logDict = {}
+    logDict['User']= request.user.username
+    logDict['Action']= 'LoggedIn'
+    logDict['HTTP']= 'GET'
+    logDict['File']= 'N/A';
+    logger.info(json.dumps(logDict))
+
     if request.user.is_authenticated():
         return HttpResponse(constants.h_loggedIn_true + ' User = ' + request.user.username)
     else:
         return HttpResponse(constants.h_loggedIn_false)
 
+
 @csrf_exempt
 def CreateUser(request):
+    logDict = {}
+    logDict['User']= 'N/A'
+    logDict['Action']= 'CreateUser'
+    logDict['HTTP']= 'POST'
+    logDict['File']= 'N/A';
+    logger.info(json.dumps(logDict))
     # form = UserCreationForm(request.POST)
     # if form.is_valid():
     #     form.save()
@@ -97,6 +148,12 @@ def CreateUser(request):
 @api_view(['POST'])
 @csrf_exempt
 def ChangePassword(request):
+    logDict = {}
+    logDict['User']= request.user.username
+    logDict['Action']= 'ChangePasswords'
+    logDict['HTTP']= 'POST'
+    logDict['File']= 'N/A';
+    logger.info(json.dumps(logDict))
     oldpw = request.POST['oldPass']
     newpw = request.POST['newPass']
     if request.user.check_password(oldpw):

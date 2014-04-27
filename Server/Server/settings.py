@@ -22,6 +22,7 @@ SECRET_KEY = 'fcs@v9x!(68ae6@$kvq%smeomb&cao)v3oxw_*^2v#dk3%=62s'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+
 TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = []
@@ -40,6 +41,7 @@ INSTALLED_APPS = (
     'rest_framework.authtoken',
     'DJServer',
 )
+
 
 
 REST_FRAMEWORK= {
@@ -64,6 +66,25 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': True,
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': '/home/hodor/OneDir/OneDir/Server/Logs/ActionLog.log',
+        },
+    },
+    'loggers': {
+        'ActionLog': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}
 
 ROOT_URLCONF = 'Server.urls'
 
