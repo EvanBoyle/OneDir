@@ -77,9 +77,9 @@ def DeleteUser(request, user):
         query = ODFile.objects.filter(name=target).delete()
         query = User.objects.filter(username=user).delete()
 
-        return HttpResponse('User Deleted')
+        return HttpResponse(constants.h_deleteUser_success)
     else:
-        return HttpResponse('Unauthorized action attempted')
+        return HttpResponse(constants.h_deleteUser_fail)
 
 @api_view(['DELETE'])
 @csrf_exempt
@@ -88,16 +88,16 @@ def DeleteFile(request, user, filename):
     logDict['User']= request.user.username
     logDict['Action']= 'DeleteFile'
     logDict['HTTP']= 'DELETE'
-    logDict['File']= filename;
+    logDict['File']= filename
     logger.info(json.dumps(logDict))
 
     print '../Files/'+user+'/'+filename
     if os.path.isfile('../Files/'+user+'/'+filename):
         os.remove('../Files/'+user+'/'+filename)
         query = ODFile.objects.filter(name=request.user, fileName =filename).delete()
-        return HttpResponse('File deleted')
+        return HttpResponse(constants.h_deleteFile_success)
     else:
-        return HttpResponse('No such file found')
+        return HttpResponse(constants.h_deleteFile_fail)
 
 @api_view(['GET'])
 @csrf_exempt
@@ -155,11 +155,6 @@ def CreateUser(request):
     logDict['HTTP']= 'POST'
     logDict['File']= 'N/A';
     logger.info(json.dumps(logDict))
-    # form = UserCreationForm(request.POST)
-    # if form.is_valid():
-    #     form.save()
-    #     return HttpResponse('User has been created.')
-    # return HttpResponse('User creation failed.')
     un = request.POST['username']
     email = request.POST['email']
     pw = request.POST['password']
@@ -173,7 +168,7 @@ def ChangePassword(request):
     logDict['User']= request.user.username
     logDict['Action']= 'ChangePasswords'
     logDict['HTTP']= 'POST'
-    logDict['File']= 'N/A';
+    logDict['File']= 'N/A'
     logger.info(json.dumps(logDict))
     oldpw = request.POST['oldPass']
     newpw = request.POST['newPass']
