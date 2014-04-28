@@ -71,8 +71,8 @@ def DeleteUser(request, user):
         logDict['HTTP']= 'DELETE'
         logDict['File']= 'N/A'
         logger.info(json.dumps(logDict))
-        if os.path.exists('/home/hodor/OneDir/OneDir/Server/Files/'+user):
-            shutil.rmtree('/home/hodor/OneDir/OneDir/Server/Files/'+user)
+        if os.path.exists('~/OneDir/Server/Files/'+user):
+            shutil.rmtree('~/OneDir/Server/Files/'+user)
         target = User.objects.filter(username=user).first()
         query = ODFile.objects.filter(name=target).delete()
         query = User.objects.filter(username=user).delete()
