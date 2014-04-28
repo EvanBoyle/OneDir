@@ -13,6 +13,7 @@ urlpatterns = patterns('',
     url(r'^UploadFile/$', 'DJServer.views.UploadFile', name='UploadFile'),
     url(r'^GetFile/(?P<user>\w{0,50})/(?P<filename>.+)/$', 'DJServer.views.GetFile', name='GetFile'),
     url(r'^DeleteFile/(?P<user>\w{0,50})/(?P<filename>.+)/$', 'DJServer.views.DeleteFile', name='DeleteFile'),
+    url(r'^DeleteUser/(?P<user>\w{0,50})/$', 'DJServer.views.DeleteUser', name='DeleteUser'),
     #adjust path to reflect your directory to serve files from
     url(r'^Serve/(?P<path>.*)$', 'django.views.static.serve', {'document_root': '../Files'}),
     url(r'^admin/', include(admin.site.urls)),
