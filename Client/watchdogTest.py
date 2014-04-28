@@ -6,20 +6,20 @@ import shutil
 import time
 
 def createFile(name):
-    file = open(name, 'w')
+    file = open(os.getenv("HOME") + "/onedir/" + name, 'w')
 
 def deleteFile(name):
-    os.remove(name)
+    os.remove(os.getenv("HOME") + "/onedir/" + name)
 
 def editFile(name):
-    file = open(name, 'w')
+    file = open(os.getenv("HOME") + "/onedir/" + name, 'w')
     file.write("Edit \n")
 
 def moveFile(name, dir):
-    os.rename(name, dir)
+    os.rename(os.getenv("HOME") + "/onedir/" + name, dir)
 
 def renameFile(name, newName):
-    os.rename(name, newName)
+    os.rename(os.getenv("HOME") + "/onedir/" + name, newName)
 
 if __name__=='__main__':
 # test.txt created, test.txt modified, test.txt modified again, test_rename.txt deleted, new_test.txt created,

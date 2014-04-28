@@ -5,7 +5,6 @@ import time
 import os
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "./Server.settings")
 import json
-import requests
 import datetime
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
@@ -26,7 +25,9 @@ class FileHandler(FileSystemEventHandler):
                 filename = event.src_path.replace("\\\\", "\\")
                 size = os.stat(filename).st_size
         # print event.src_path + ": " + str(size) + " " + event.event_type
-        logfilepath = "clientLog.json"
+        logfilepath = "./clientLog.json"
+        if not os.path.exists(logfilepath):
+            open(logfilepath, "w")
         # gets path relative to ~/onedir. This means users are not allowed to create directories called onedir!
         filepath = event.src_path[event.src_path.rfind('onedir')+7:]
 
@@ -41,7 +42,7 @@ class FileHandler(FileSystemEventHandler):
 
 if __name__ == '__main__':
 
-    path_name = '~/onedir'
+    path_name = os.getenv("HOME") + '/onedir'
     # print os.path.exists(os.path.dirname(path_name))
     observer = Observer()
     observer.schedule(FileHandler(), path=path_name, recursive=True)
