@@ -15,7 +15,7 @@ urlpatterns = patterns('',
     url(r'^DeleteFile/(?P<user>\w{0,50})/(?P<filename>.+)/$', 'DJServer.views.DeleteFile', name='DeleteFile'),
     url(r'^DeleteUser/(?P<user>\w{0,50})/$', 'DJServer.views.DeleteUser', name='DeleteUser'),
     #adjust path to reflect your directory to serve files from
-    url(r'^Serve/(?P<path>.*)$', 'django.views.static.serve', {'document_root': '../Files'}),
+    url(r'^Serve/(?P<path>.*)$', 'django.views.static.serve', {'document_root': '../Server/Files'}),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^LoggedIn/', 'DJServer.views.LoggedIn', name='LoggedIn'),
     url(r'^api-token-auth/', 'rest_framework.authtoken.views.obtain_auth_token'),
