@@ -84,7 +84,7 @@ if __name__ == '__main__':
 
     #make ~/onedir if it doesn't exist
     try:
-        os.mkdir('~/onedir')
+        os.makedirs(os.getenv("HOME") + '/onedir')
         print 'dir made'
     except OSError as e:
         print e

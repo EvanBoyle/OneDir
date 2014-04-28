@@ -32,7 +32,7 @@ class Synchronization:
             'path': full_path[:full_path.rfind('/') + 1]
         }
         files = {
-            'file': open('../Server/Files/' + full_path, 'rb')
+            'file': open(os.getenv("HOME") + '/' + full_path, 'rb')
         }
         response = requests.post(constants.server_url + '/UploadFile/', headers=header, files=files, data=path)
         print response.content
@@ -49,7 +49,7 @@ class Synchronization:
             'path': full_path[:full_path.rfind('/') + 1]
         }
         files = {
-            'file': open('../Server/Files/' + full_path, 'rb')
+            'file': open(os.getenv("HOME") + '/' + full_path, 'rb')
         }
         response = requests.delete(constants.server_url + '/DeleteFile/', headers= header, files=files, data=path)
         print response.content
