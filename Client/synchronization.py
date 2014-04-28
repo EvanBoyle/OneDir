@@ -75,11 +75,12 @@ class Synchronization:
             if entry["file"] not in localNames.keys() or timestamp > localNames[entry["file"]][0]:
                 localNames[entry["file"]] = (timestamp, entry["event"])
 
-        server_json = json.loads(self.list_files)
+        server_json = json.loads(server_files)
         i = 0
         while i < len(server_json):
             name = server_json[i][0]
             timestamp = server_json[i][3]
+            # timestamp = time.mktime(time.strptime(timestamp_string, '%y-%m-%dT%H:%M:%S.%fZ'))
             if name not in serverNames.keys() or timestamp > serverNames[name]:
                 serverNames[name] = timestamp
             i += 1
