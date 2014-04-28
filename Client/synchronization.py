@@ -46,7 +46,8 @@ class Synchronization:
             return
         #requests.get(constants.server_url + '/GetFile/' + self.username + '/' + filename)
         print constants.server_url + '/GetFile/' + self.username + '/' + filename
-        file = urllib2.urlopen(constants.server_url + '/GetFile/' + self.username + '/' + filename)
+        req = urllib2.Request(constants.server_url + '/GetFile/' + self.username + '/' + filename)
+        file = urllib2.urlopen(req)
         local = open(os.getenv("HOME") + '/onedir/' + filename)
         local.write(file.read())
         local.close()
