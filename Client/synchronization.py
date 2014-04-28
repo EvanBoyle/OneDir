@@ -46,7 +46,7 @@ class Synchronization:
 
     def check_server(self):
         server_files = self.list_files()
-        filepath = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "clientLog.json"))
+        filepath = os.path.abspath(os.path.join(os.path.dirname(__file__), "clientLog.json"))
         client_files = open(filepath, "r")
         # For each server file, whatever the client doesn't have the client should pull from the server
         # For each client file, whatever the server doesn't have the client should push to the server

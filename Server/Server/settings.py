@@ -74,7 +74,7 @@ LOGGING = {
         'file': {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
-            'filename': '/home/hodor/OneDir/OneDir/Server/Logs/ActionLog.log',
+            'filename': 'Logs/ActionLog.log',
         },
     },
     'loggers': {

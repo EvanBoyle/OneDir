@@ -13,6 +13,14 @@ import getopt
 token = ''
 sync = False
 
+def syncOn():
+    global sync
+    sync = True
+
+def syncOff():
+    global sync
+    sync = False
+
 def getToken(username, password):
     response = requests.post(constants.server_url + '/api-token-auth/', {'username': username, 'password' : password})
     # response.content["token"]
@@ -80,8 +88,7 @@ if __name__ == '__main__':
             print 'Auto synchronization off.'
         if sys.argv[1] == 1:
             print 'Auto synchronization on.'
-            global sync
-            sync = True
+            syncOn()
 
     try:
         print constants.p_welcome
@@ -126,10 +133,10 @@ if __name__ == '__main__':
                     print constants.indent(constants.p_passwords_dont_match)
 
         while (True):
-            input2 = raw_input('Enter 1 to view files, 2 to change password, or 3 to turn on auto sync: ')
+            input2 = raw_input('Enter 1 to view files, 2 to change password, or 3 to turn auto sync on/off: ')
             while input2 != '0' and input2 != '1' and input2 != '2' and input2 != '3' and input2 != '8' and input2 != '9':
                 print constants.indent(constants.p_incorrect_input)
-                input2 = raw_input('Enter 1 to view files, 2 to change password, or 3 to turn on auto sync: ')
+                input2 = raw_input('Enter 1 to view files, 2 to change password, or 3 to turn auto sync on/off: ')
 
             # Check for exit
             if input2 == '0':
@@ -154,14 +161,17 @@ if __name__ == '__main__':
                     new_pw2 = getpass.getpass('Confirm new password: ')
                 passwordchange(old_pw, new_pw, un)
 
-	    # Auto sync
-	    if input2 == '3':
-		print 'Auto synchronization on.'
-		global sync
-		sync = True
+            # Auto sync
+            if input2 == '3':
+                if sync:
+                    print 'Auto synchronization off.'
+                    syncOff()
+                else:
+                    print 'Auto synchronization on.'
+                    syncOn()
 
-            if input2 == '9':
-                mySync.upload_file('anivia2.mp3')
+        if input2 == '9':
+            mySync.upload_file('anivia2.mp3')
 
     except KeyboardInterrupt:
         print constants.p_goodbye
