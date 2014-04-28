@@ -27,6 +27,7 @@ def syncOff():
 def getSync():
     return sync
 
+
 def getToken(username, password):
     response = requests.post(constants.server_url + '/api-token-auth/', {'username': username, 'password' : password})
     # response.content["token"]
@@ -41,7 +42,7 @@ def isLogged(token):
     header['Authorization']= 'Token ' + token
     header['content-type']='application/json'
     response = requests.get(constants.server_url + '/LoggedIn/',headers = header)
-    return response.startswith(constants.h_loggedIn_true)
+    return response.content.startswith(constants.h_loggedIn_true)
 
 def login(username, password):
     getToken(username, password)
@@ -104,6 +105,9 @@ if __name__ == '__main__':
         if sys.argv[1] == 1:
             print 'Auto synchronization on.'
             syncOn()
+            # mySync = synchronization.Synchronization(t, username, sync)
+            # Synchronization needs username, how would we start syncing before login?
+
 
     try:
         print constants.p_welcome
@@ -127,7 +131,6 @@ if __name__ == '__main__':
                 if login(un, pw):
                     print constants.indent(constants.p_login_success)
                     mySync = synchronization.Synchronization(token, un, sync) # This authenticates checking the server for files
-                    mySync.check_server()
                     break
                 print constants.indent(constants.p_login_fail)
 
@@ -184,7 +187,7 @@ if __name__ == '__main__':
                 else:
                     print 'Auto synchronization on.'
                     syncOn()
-                    mySync.check_server()
+                    mySync.start()
 
         if input2 == '9':
             mySync.upload_file('anivia2.mp3')

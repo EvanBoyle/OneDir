@@ -11,12 +11,12 @@ def createFile(name):
 def deleteFile(name):
     os.remove(os.getenv("HOME") + "/onedir/" + name)
 
-def editFile(name):
+def editFile(name, stuff):
     file = open(os.getenv("HOME") + "/onedir/" + name, 'w')
-    file.write("Edit \n")
+    file.write(stuff)
 
-def moveFile(name, dir):
-    os.rename(os.getenv("HOME") + "/onedir/" + name, dir)
+# def moveFile(name, dir):
+#     os.rename(os.getenv("HOME") + "/onedir/" + name, dir)
 
 def renameFile(name, newName):
     os.rename(os.getenv("HOME") + "/onedir/" + name, newName)
@@ -26,7 +26,7 @@ if __name__=='__main__':
 # testdir created, new_test.txt deleted, new_test.txt created, testdir modified, new_test.txt deleted
     createFile("test.txt")
     time.sleep(2)
-    #editFile("test2.txt")
+    editFile("test.txt", "hi")
     time.sleep(2)
     # deleteFile("test.txt")
     # deleteFile("test2.txt")
