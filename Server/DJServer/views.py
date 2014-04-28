@@ -9,7 +9,6 @@ import hashlib
 import os
 from django.core.serializers.json import DjangoJSONEncoder
 import sys
-sys.path.append("..")
 import constants
 import json
 import logging
@@ -51,9 +50,9 @@ def UploadFile(request):
 
     #writing file and creating md5 hash
     md5 = hashlib.md5()
-    if not os.path.exists('../Files/'+ uname + '/'+ path):
-        os.makedirs('../Files/'+ uname + '/'+ path)
-    with open('../Files/' + uname+'/'+path+ uFile.name, 'w+') as destination:
+    if not os.path.exists('../Server/Files/'+ uname + '/'+ path):
+        os.makedirs('../Server/Files/'+ uname + '/'+ path)
+    with open('../Server/Files/' + uname+'/'+path+ uFile.name, 'w+') as destination:
         for chunk in uFile.chunks():
             md5.update(chunk)
             destination.write(chunk)
@@ -71,8 +70,8 @@ def DeleteUser(request, user):
         logDict['HTTP']= 'DELETE'
         logDict['File']= 'N/A'
         logger.info(json.dumps(logDict))
-        if os.path.exists('~/OneDir/Server/Files/'+user):
-            shutil.rmtree('~/OneDir/Server/Files/'+user)
+        if os.path.exists('../Server/Files/'+user):
+            shutil.rmtree('../Server/Files/'+user)
         target = User.objects.filter(username=user).first()
         query = ODFile.objects.filter(name=target).delete()
         query = User.objects.filter(username=user).delete()
@@ -91,9 +90,9 @@ def DeleteFile(request, user, filename):
     logDict['File']= filename
     logger.info(json.dumps(logDict))
 
-    print '../Files/'+user+'/'+filename
-    if os.path.isfile('../Files/'+user+'/'+filename):
-        os.remove('../Files/'+user+'/'+filename)
+    print '../Server/Files/'+user+'/'+filename
+    if os.path.isfile('../Server/Files/'+user+'/'+filename):
+        os.remove('../Server/Files/'+user+'/'+filename)
         query = ODFile.objects.filter(name=request.user, fileName =filename).delete()
         return HttpResponse(constants.h_deleteFile_success)
     else:
@@ -106,7 +105,7 @@ def GetFile(request, user, filename):
     logDict['User']= request.user.username
     logDict['Action']= 'GetFile'
     logDict['HTTP']= 'GET'
-    logDict['File']= filename;
+    logDict['File']= filename
     logger.info(json.dumps(logDict))
 
     return redirect(constants.server_url + '/Serve/'+user+'/'+filename)

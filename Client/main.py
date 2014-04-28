@@ -6,9 +6,7 @@ import json
 import getpass
 import synchronization
 import sys
-sys.path.append("..")
 import constants
-import sys
 import getopt
 import os
 token = ''
@@ -179,6 +177,7 @@ if __name__ == '__main__':
                 else:
                     print 'Auto synchronization on.'
                     syncOn()
+                    mySync.check_server()
 
         if input2 == '9':
             mySync.upload_file('anivia2.mp3')

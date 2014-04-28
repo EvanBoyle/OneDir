@@ -25,6 +25,7 @@ class Synchronization:
         return response.content
 
     def upload_file(self, full_path):
+        print os.getenv("HOME")
         header = {
             'Authorization': 'Token ' + self.token
         }
@@ -32,7 +33,7 @@ class Synchronization:
             'path': full_path[:full_path.rfind('/') + 1]
         }
         files = {
-            'file': open(os.getenv("HOME") + '/' + full_path, 'rb')
+            'file': open(os.getenv("HOME") + '/onedir/' + full_path, 'rb')
         }
         response = requests.post(constants.server_url + '/UploadFile/', headers=header, files=files, data=path)
         print response.content
@@ -41,17 +42,10 @@ class Synchronization:
         requests.get(constants.server_url + '/GetFile/' + self.username + '/' + filename)
 
     def delete_file(self, full_path):
-        #TODO: access deletion endpoint
         header = {
             'Authorization': 'Token ' + self.token
         }
-        path = {
-            'path': full_path[:full_path.rfind('/') + 1]
-        }
-        files = {
-            'file': open(os.getenv("HOME") + '/' + full_path, 'rb')
-        }
-        response = requests.delete(constants.server_url + '/DeleteFile/', headers= header, files=files, data=path)
+        response = requests.delete(constants.server_url + '/DeleteFile/' + self.username + '/' + full_path , headers= header)
         print response.content
 
     def check_server(self):
@@ -60,11 +54,14 @@ class Synchronization:
         client_files = open(filepath, "r")
         # For each server file, whatever the client doesn't have the client should pull from the server
         # For each client file, whatever the server doesn't have the client should push to the server
+        localNames = []
+        serverNames = []
         for line in client_files:
-            if line[2] == "deleted":
-                self.delete_file(line[1])
+            entry = json.loads(line)
+            if entry["event"] == "deleted":
+                self.delete_file(entry["file"])
             else:
-                self.upload_file(line[1])
+                self.upload_file(entry["file"])
 
 
 if __name__ == '__main__':

@@ -24,9 +24,9 @@ def renameFile(name, newName):
 if __name__=='__main__':
 # test.txt created, test.txt modified, test.txt modified again, test_rename.txt deleted, new_test.txt created,
 # testdir created, new_test.txt deleted, new_test.txt created, testdir modified, new_test.txt deleted
-    createFile("test.txt")
+    #createFile("test.txt")
     time.sleep(2)
-    editFile("test.txt")
+    #editFile("test.txt")
     time.sleep(2)
     deleteFile("test.txt")
     # renameFile("test.txt", "test_rename.txt")
