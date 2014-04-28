@@ -24,11 +24,11 @@ def renameFile(name, newName):
 if __name__=='__main__':
 # test.txt created, test.txt modified, test.txt modified again, test_rename.txt deleted, new_test.txt created,
 # testdir created, new_test.txt deleted, new_test.txt created, testdir modified, new_test.txt deleted
-    createFile("test.txt")
+    createFile("test6.txt")
     time.sleep(2)
-    editFile("test.txt", "hi")
+    editFile("test6.txt", "hi")
     time.sleep(2)
-    # deleteFile("test.txt")
+    #deleteFile("test4.txt")
     # deleteFile("test2.txt")
     # renameFile("test.txt", "test_rename.txt")
     # time.sleep(2)

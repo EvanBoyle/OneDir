@@ -73,7 +73,7 @@ def passwordchange(old_pw, new_pw, un):
 def listfiles(un):
     header = {}
     header['Authorization']= 'Token '+ token
-    response = requests.get('http://127.0.0.1:8000/ListFiles/' + un, headers=header)
+    response = requests.get(constants.server_url + '/ListFiles/' + un, headers=header)
     if response.content == constants.h_listFiles_fail:
         print constants.indent(constants.p_listFiles_fail)
     else:

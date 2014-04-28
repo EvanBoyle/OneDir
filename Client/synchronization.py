@@ -88,6 +88,9 @@ class Synchronization:
         #         self.delete_file(entry["file"])
         #     else:
         #         self.upload_file(entry["file"])
+        os.remove("clientLog.json")
+        f = open("clientLog.json", 'w') #wipe clientLog after sync finishes
+        f.close()
 
 
     # def start(self):

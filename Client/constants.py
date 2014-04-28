@@ -33,4 +33,4 @@ def indent(string):
     return '   ' + string
 
 
-server_url = 'http://127.0.0.1:8000'
+server_url = 'http://ec2-54-87-166-146.compute-1.amazonaws.com:8000'
