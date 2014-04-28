@@ -68,8 +68,6 @@ class Synchronization:
         localNames = {} #filename to timestamp
         serverNames = {}
 
-
-
         for line in client_files: #get most recent timestamp events for each local file
             entry = json.loads(line)
             timestamp = time.mktime(time.strptime(entry["time"], '%y-%m-%dT%H:%M:%S.%fZ'))

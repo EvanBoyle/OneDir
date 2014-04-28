@@ -20,7 +20,7 @@ class FileHandler(FileSystemEventHandler):
         file_time = time.strftime("%y-%m-%dT%H:%M:%S.%f")
         file_time = file_time[:-3] + "Z" #weird formatting to match Django
         if os.path.isfile(event.src_path):
-            if event.event_type == "created" or event.event_type == "modified":
+            if event.event_type == "created" or event.event_type == "modified" or event.event_type == "moved":
                 filename = event.src_path.replace("\\\\", "\\")
                 size = os.stat(filename).st_size
         # print event.src_path + ": " + str(size) + " " + event.event_type
@@ -30,10 +30,14 @@ class FileHandler(FileSystemEventHandler):
         # gets path relative to ~/onedir. This means users are not allowed to create directories called onedir!
         filepath = event.src_path[event.src_path.rfind('onedir')+7:]
 
-        if '___' not in event.src_path and (size != -1 or event.event_type == "deleted"):
-            f = open(logfilepath, "a")
-            f.writelines(json.dumps({'file': filepath, 'size': size, 'event': event.event_type, 'time': file_time}, sort_keys=True))
-            f.writelines("\n")
+        # if '___' not in event.src_path and (size != -1 or event.event_type == "deleted"):
+        #     f = open(logfilepath, "a")
+        #     f.writelines(json.dumps({'file': filepath, 'size': size, 'event': event.event_type, 'time': file_time}, sort_keys=True))
+        #     f.writelines("\n")
+
+        f = open(logfilepath, "a")
+        f.writelines(json.dumps({'file': filepath, 'size': size, 'event': event.event_type, 'time': file_time}, sort_keys=True))
+        f.writelines("\n")
 
     def on_any_event(self, event):
         self.process(event)
