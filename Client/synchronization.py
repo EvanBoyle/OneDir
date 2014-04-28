@@ -8,6 +8,7 @@ import constants
 import json
 import time
 import main
+import urllib2
 # from Server.DJServer.views import *
 
 
@@ -41,7 +42,15 @@ class Synchronization:
         # print response.content
 
     def download_file(self, filename):
-        requests.get(constants.server_url + '/GetFile/' + self.username + '/' + filename)
+
+        if filename == "":
+            return
+        #requests.get(constants.server_url + '/GetFile/' + self.username + '/' + filename)
+        print constants.server_url + '/GetFile/' + self.username + '/' + filename
+        file = urllib2.urlopen(constants.server_url + '/GetFile/' + self.username + '/' + filename)
+        local = open(os.getenv("HOME") + '/onedir/' + filename)
+        local.write(file.read())
+        local.close()
 
     def delete_file(self, full_path):
         header = {
@@ -58,6 +67,8 @@ class Synchronization:
         # For each client file, whatever the server doesn't have the client should push to the server
         localNames = {} #filename to timestamp
         serverNames = {}
+
+
 
         for line in client_files: #get most recent timestamp events for each local file
             entry = json.loads(line)
