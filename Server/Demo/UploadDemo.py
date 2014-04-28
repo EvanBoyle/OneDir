@@ -23,7 +23,17 @@ def DeleteDemo():
     header['Authorization']= 'Token '+ token
     response = requests.delete(constants.server_url + '/DeleteFile/evan/files/lulz/lol.txt', headers= header)
     return response
+
+def DeleteUser():
+    response = requests.post(constants.server_url + '/api-token-auth/', {'username': 'admin', 'password' : 'password'})
+    token = response.json()['token']
+    header = {}
+    header['Authorization']= 'Token '+ token
+    response = requests.delete(constants.server_url + '/DeleteUser/evan', headers= header)
+    return response
 if __name__ == '__main__':
     UploadDemo()
-    deleteTest = DeleteDemo()
-    print deleteTest.content
+    #deleteTest = DeleteDemo()
+    #print deleteTest.content
+    response = DeleteUser()
+    print response.content

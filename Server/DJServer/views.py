@@ -13,6 +13,7 @@ sys.path.append("..")
 import constants
 import json
 import logging
+import shutil
 # Create your views here.
 
 logger = logging.getLogger('ActionLog')
@@ -59,6 +60,26 @@ def UploadFile(request):
     f = ODFile(fileName=path+ uFile.name.decode("utf-8"), name = request.user, fileHash=md5.hexdigest().decode("utf-8"), fileSize=uFile.size)
     f.save()
     return HttpResponse(constants.h_uploadFile_success)
+
+@api_view(['DELETE'])
+@csrf_exempt
+def DeleteUser(request, user):
+    if request.user.is_superuser:
+        logDict = {}
+        logDict['User']= request.user.username
+        logDict['Action']= 'DeleteUser'
+        logDict['HTTP']= 'DELETE'
+        logDict['File']= 'N/A';
+        logger.info(json.dumps(logDict))
+        if os.path.exists('/home/hodor/OneDir/OneDir/Server/Files/'+user):
+            shutil.rmtree('/home/hodor/OneDir/OneDir/Server/Files/'+user)
+        target = User.objects.filter(username=user).first()
+        query = ODFile.objects.filter(name=target).delete()
+        query = User.objects.filter(username=user).delete()
+
+        return HttpResponse('User Deleted')
+    else:
+        return HttpResponse('Unauthorized action attempted')
 
 @api_view(['DELETE'])
 @csrf_exempt
