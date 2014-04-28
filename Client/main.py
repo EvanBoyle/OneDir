@@ -4,11 +4,15 @@ __author__ = 'ta3fh', 'csh7kd'
 import requests
 import json
 import getpass
+import time
 import synchronization
+import filemonitor
+from watchdog.observers import Observer
 import sys
 import constants
 import getopt
 import os
+import subprocess
 token = ''
 sync = False
 
@@ -19,6 +23,9 @@ def syncOn():
 def syncOff():
     global sync
     sync = False
+
+def getSync():
+    return sync
 
 def getToken(username, password):
     response = requests.post(constants.server_url + '/api-token-auth/', {'username': username, 'password' : password})
@@ -83,11 +90,11 @@ if __name__ == '__main__':
     #make ~/onedir if it doesn't exist
     try:
         os.makedirs(os.getenv("HOME") + '/onedir')
-        print 'dir made'
     except OSError as e:
-        print e
-        print 'dir not made'
         pass
+
+    #start filemonitor in the background
+    subprocess.call("python filemonitor.py &", shell=True)
 
     if len(sys.argv) <= 1:
         print '*auto synchronization = 0 or 1: main.py <sync>'

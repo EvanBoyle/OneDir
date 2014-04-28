@@ -14,7 +14,6 @@ class FileHandler(FileSystemEventHandler):
     Watches for events (creation, deletion, and modification of files), then prints the event type and path.
     """
 
-    # dataDict = {}
     def process(self, event):
         size = -1
         time = datetime.datetime.utcnow()
@@ -41,7 +40,6 @@ class FileHandler(FileSystemEventHandler):
 
 
 if __name__ == '__main__':
-
     path_name = os.getenv("HOME") + '/onedir'
     # print os.path.exists(os.path.dirname(path_name))
     observer = Observer()
@@ -49,7 +47,7 @@ if __name__ == '__main__':
     observer.start()
 
     try:
-        print("Watching for changes...")
+        # print("Watching for changes...")
         while True:
             time.sleep(60)
     except KeyboardInterrupt:

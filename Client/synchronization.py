@@ -7,6 +7,7 @@ import sys
 import constants
 import json
 import time
+import main
 # from Server.DJServer.views import *
 
 
@@ -90,3 +91,9 @@ class Synchronization:
 
 if __name__ == '__main__':
     pass
+    # make new instance of synchronization!
+    # while True:
+        # check whether logged in
+        # if sync is on, check server.
+        # if main.getSync():
+
