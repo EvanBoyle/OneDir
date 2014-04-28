@@ -47,7 +47,7 @@ OneDir project for CS3240
 
   Watchdog client for file monitoring, fetching, and pushing.
 
-  main.py: User login and registration. This needs to be run through command prompt or terminal because of the way password prompts work.
+  main.py: User login and registration. This needs to be run through command prompt or terminal because of the way password prompts work. Runs filemonitor.py in the background and calls synchronization.py to check the server when auto sync is turned on.
 
   filemonitor.py: watches creation, deletion, and modification of files, and logs the file path, file size, and type of event to a JSON file.
   
@@ -57,5 +57,5 @@ OneDir project for CS3240
 
   TODO:
 
-    compare local and server files and update client accordingly
+   auto synchronization on and off
     
