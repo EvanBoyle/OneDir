@@ -24,7 +24,7 @@ class Synchronization:
         response = requests.get(constants.server_url + '/ListFiles/' + self.username, headers=header)
         return response.content
 
-    def upload_file(self, full_path): #Haven't decided what parameters to pass
+    def upload_file(self, full_path):
         header = {
             'Authorization': 'Token ' + self.token
         }
@@ -40,9 +40,19 @@ class Synchronization:
     def download_file(self, filename):
         requests.get(constants.server_url + '/GetFile/' + self.username + '/' + filename)
 
-    def delete_file(self, filename):
+    def delete_file(self, full_path):
         #TODO: access deletion endpoint
-        pass
+        header = {
+            'Authorization': 'Token ' + self.token
+        }
+        path = {
+            'path': full_path[:full_path.rfind('/') + 1]
+        }
+        files = {
+            'file': open('../Server/Files/' + full_path, 'rb')
+        }
+        response = requests.delete(constants.server_url + '/DeleteFile/', headers= header, files=files, data=path)
+        print response.content
 
     def check_server(self):
         server_files = self.list_files()
