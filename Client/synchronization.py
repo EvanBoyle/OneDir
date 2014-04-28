@@ -41,14 +41,14 @@ class Synchronization:
         # print response.content
 
     def download_file(self, filename):
-
-        if filename == "":
-            return
+        header = {
+            'Authorization': 'Token ' + self.token
+        }
         #requests.get(constants.server_url + '/GetFile/' + self.username + '/' + filename)
-        print constants.server_url + '/GetFile/' + self.username + '/' + filename
-        req = urllib2.Request(constants.server_url + '/GetFile/' + self.username + '/' + filename)
+        # print constants.server_url + '/GetFile/' + self.username + '/' + filename
+        req = urllib2.Request(constants.server_url + '/GetFile/' + self.username + '/' + filename, headers=header)
         file = urllib2.urlopen(req)
-        local = open(os.getenv("HOME") + '/onedir/' + filename)
+        local = open(os.getenv("HOME") + '/onedir/' + filename, 'w')
         local.write(file.read())
         local.close()
 
@@ -80,8 +80,8 @@ class Synchronization:
         i = 0
         while i < len(server_json):
             name = server_json[i][0]
-            timestamp = server_json[i][3]
-            # timestamp = time.mktime(time.strptime(timestamp_string, '%y-%m-%dT%H:%M:%S.%fZ'))
+            timestamp_string = server_json[i][3]
+            timestamp = time.mktime(time.strptime(str(server_json[i][3]), '%y-%m-%dT%H:%M:%S.%fZ'))
             if name not in serverNames.keys() or timestamp > serverNames[name]:
                 serverNames[name] = timestamp
             i += 1
@@ -94,7 +94,7 @@ class Synchronization:
                     self.upload_file(file)
 
         for file in serverNames.keys():
-            print serverNames.keys()
+            # print serverNames.keys()
             if file not in localNames.keys() or serverNames[file] > localNames[file][0]:
                 self.download_file(file)
 
