@@ -131,6 +131,7 @@ if __name__ == '__main__':
                 if login(un, pw):
                     print constants.indent(constants.p_login_success)
                     mySync = synchronization.Synchronization(token, un, sync) # This authenticates checking the server for files
+                    mySync.check_server()
                     break
                 print constants.indent(constants.p_login_fail)
 
@@ -187,6 +188,7 @@ if __name__ == '__main__':
                 else:
                     print 'Auto synchronization on.'
                     syncOn()
+                    mySync = synchronization.Synchronization(token, un, sync)
                     mySync.start()
 
         if input2 == '9':

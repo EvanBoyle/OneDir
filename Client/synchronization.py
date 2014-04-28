@@ -90,8 +90,8 @@ class Synchronization:
 
 
     def start(self):
-        print "sync " + main.getSync() # always gets False...
-        print "is logged in " + main.isLogged(self.token)
+        print "sync " + str(main.getSync()) # always gets False...
+        print "is logged in " + str(main.isLogged(self.token))
         if main.getSync() and main.isLogged(self.token):
             while True:
                 mySync = Synchronization(self.token, self.username, main.getSync())
