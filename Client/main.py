@@ -19,10 +19,14 @@ sync = False
 def syncOn():
     global sync
     sync = True
+    file = open('.sync', 'w')
+    file.write('True')
 
 def syncOff():
     global sync
     sync = False
+    file = open('.sync', 'w')
+    file.write('False')
 
 def getSync():
     return sync
@@ -94,19 +98,19 @@ if __name__ == '__main__':
     except OSError as e:
         pass
 
-    #start filemonitor in the background
+    #starts filemonitor process in the background each time you start main.py. You have to kill the process manually if you want to stop monitoring files.
     subprocess.call("python filemonitor.py &", shell=True)
 
     if len(sys.argv) <= 1:
         print '*auto synchronization = 0 or 1: main.py <sync>'
     else:
-        if sys.argv[1] == 0:
+        if sys.argv[1] == '0':
             print 'Auto synchronization off.'
-        if sys.argv[1] == 1:
+        if sys.argv[1] == '1':
             print 'Auto synchronization on.'
             syncOn()
             # mySync = synchronization.Synchronization(t, username, sync)
-            # Synchronization needs username, how would we start syncing before login?
+            # Synchronization needs username. Syncing won't begin until after login/registration.
 
 
     try:
@@ -130,8 +134,9 @@ if __name__ == '__main__':
                 pw = getpass.getpass()
                 if login(un, pw):
                     print constants.indent(constants.p_login_success)
-                    mySync = synchronization.Synchronization(token, un, sync) # This authenticates checking the server for files
-                    mySync.check_server()
+                    # mySync = synchronization.Synchronization(token, un, sync) # This authenticates checking the server for files
+                    # mySync.start()
+                    subprocess.call("python synchronization.py " + token + " " + un + " &", shell=True)
                     break
                 print constants.indent(constants.p_login_fail)
 
@@ -180,16 +185,16 @@ if __name__ == '__main__':
                     new_pw2 = getpass.getpass('Confirm new password: ')
                 passwordchange(old_pw, new_pw, un)
 
-            # Auto sync
+            # Auto sync runs synchronization.py in the background
             if input2 == '3':
                 if sync:
                     print 'Auto synchronization off.'
                     syncOff()
+                    # mySync = synchronization.Synchronization(token, un, sync)
+                    # mySync.start()
                 else:
                     print 'Auto synchronization on.'
                     syncOn()
-                    mySync = synchronization.Synchronization(token, un, sync)
-                    mySync.start()
 
         if input2 == '9':
             mySync.upload_file('anivia2.mp3')

@@ -16,7 +16,8 @@ class Synchronization:
     def __init__(self, t, un, s):  # Initialized in main.py to authenticate checking the server for files
         self.token = t
         self.username = un
-        self.sync = s
+        file = open('.sync', 'r')
+        self.sync = file.readline()
 
     def list_files(self):
         header = {}
@@ -26,7 +27,7 @@ class Synchronization:
         return response.content
 
     def upload_file(self, full_path):
-        print os.getenv("HOME")
+        # print os.getenv("HOME")
         header = {
             'Authorization': 'Token ' + self.token
         }
@@ -37,7 +38,7 @@ class Synchronization:
             'file': open(os.getenv("HOME") + '/onedir/' + full_path, 'rb')
         }
         response = requests.post(constants.server_url + '/UploadFile/', headers=header, files=files, data=path)
-        print response.content
+        # print response.content
 
     def download_file(self, filename):
         requests.get(constants.server_url + '/GetFile/' + self.username + '/' + filename)
@@ -47,7 +48,7 @@ class Synchronization:
             'Authorization': 'Token ' + self.token
         }
         response = requests.delete(constants.server_url + '/DeleteFile/' + self.username + '/' + full_path , headers= header)
-        print response.content
+        # print response.content
 
     def check_server(self):
         server_files = self.list_files()
@@ -89,26 +90,27 @@ class Synchronization:
         #         self.upload_file(entry["file"])
 
 
-    def start(self):
-        print "sync " + str(main.getSync()) # always gets False...
-        print "is logged in " + str(main.isLogged(self.token))
-        if main.getSync() and main.isLogged(self.token):
-            while True:
-                mySync = Synchronization(self.token, self.username, main.getSync())
-                mySync.check_server()
-                time.sleep(2)
-                if not main.getSync():
-                    break
-        else:
-            pass
+    # def start(self):
+    #     print "sync " + str(self.sync)
+    #     print "is logged in " + str(main.isLogged(self.token))
+    #     if main.isLogged(self.token):
+    #         if self.sync:
+    #             mySync = Synchronization(self.token, self.username, self.sync)
+    #             mySync.check_server()
 
 
 
 if __name__ == '__main__':
-    pass
-    # make new instance of synchronization!
-    # while True:
-        # check whether logged in
-        # if sync is on, check server.
-        # if main.getSync():
+    token = sys.argv[1]
+    username = sys.argv[2]
+    while True:
+        file = open('.sync', 'r')
+        sync = file.readline()
+        # print "sync " + str(sync)
+        # print "is logged in " + str(main.isLogged(token))
+        if main.isLogged(token):
+            if sync=='True':
+                mySync = Synchronization(token, username, sync)
+                mySync.check_server()
+        time.sleep(60)
 
