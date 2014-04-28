@@ -23,7 +23,6 @@ class Synchronization:
     def list_files(self):
         header = {}
         header['Authorization']= 'Token '+ self.token
-        header['content-type']='application/json'
         response = requests.get(constants.server_url + '/ListFiles/' + self.username, headers=header)
         return response.content
 
@@ -76,11 +75,14 @@ class Synchronization:
             if entry["file"] not in localNames.keys() or timestamp > localNames[entry["file"]][0]:
                 localNames[entry["file"]] = (timestamp, entry["event"])
 
-        for line in self.list_files():
-            name = line[4:line.find(',') - 1]
-            timestamp = line[line.rfind(',') + 3:-3]
+        server_json = json.loads(self.list_files)
+        i = 0
+        while i < len(server_json):
+            name = server_json[i][0]
+            timestamp = server_json[i][3]
             if name not in serverNames.keys() or timestamp > serverNames[name]:
                 serverNames[name] = timestamp
+            i += 1
 
         for file in localNames.keys():
             if file not in serverNames.keys() or localNames[file][0] > serverNames[file]:
@@ -90,6 +92,7 @@ class Synchronization:
                     self.upload_file(file)
 
         for file in serverNames.keys():
+            print serverNames.keys()
             if file not in localNames.keys() or serverNames[file] > localNames[file][0]:
                 self.download_file(file)
 
