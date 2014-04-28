@@ -22,27 +22,10 @@ def renameFile(name, newName):
     os.rename(os.getenv("HOME") + "/onedir/" + name, newName)
 
 if __name__=='__main__':
-# test.txt created, test.txt modified, test.txt modified again, test_rename.txt deleted, new_test.txt created,
-# testdir created, new_test.txt deleted, new_test.txt created, testdir modified, new_test.txt deleted
-    createFile("test6.txt")
+
+    # createFile("test6.txt")
     time.sleep(2)
-    editFile("test6.txt", "hi")
+    editFile("test2.txt", "yayyyy download works")
     time.sleep(2)
-    #deleteFile("test4.txt")
-    # deleteFile("test2.txt")
-    # renameFile("test.txt", "test_rename.txt")
-    # time.sleep(2)
-    # deleteFile("test_rename.txt")
-    # time.sleep(2)
-    # if not os.path.exists("testdir"):
-    #     os.mkdir("testdir")
-    # time.sleep(2)
-    # moveFile("new_test.txt", "testdir/new_test.txt")
-    # time.sleep(2)
-    # os.chdir("testdir")
-    # time.sleep(2)
-    # editFile("new_test.txt")
-    # time.sleep(2)
-    # deleteFile("new_test.txt")
-    # time.sleep(10)
-    # shutil.rmtree("/testdir")
+    # deleteFile("test4.txt")
+

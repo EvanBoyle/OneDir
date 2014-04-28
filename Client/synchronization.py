@@ -81,7 +81,7 @@ class Synchronization:
         while i < len(server_json):
             name = server_json[i][0]
             timestamp_string = server_json[i][3]
-            timestamp = time.mktime(time.strptime(str(server_json[i][3]), '%y-%m-%dT%H:%M:%S.%fZ'))
+            timestamp = time.mktime(time.strptime(str(server_json[i][3]), '%Y-%m-%dT%H:%M:%S.%fZ'))
             if name not in serverNames.keys() or timestamp > serverNames[name]:
                 serverNames[name] = timestamp
             i += 1
