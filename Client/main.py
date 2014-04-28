@@ -4,14 +4,28 @@ __author__ = 'ta3fh', 'csh7kd'
 import requests
 import json
 import getpass
+import time
 import synchronization
+import filemonitor
+from watchdog.observers import Observer
 import sys
-sys.path.append("..")
 import constants
-import sys
 import getopt
+import os
+import subprocess
 token = ''
 sync = False
+
+def syncOn():
+    global sync
+    sync = True
+
+def syncOff():
+    global sync
+    sync = False
+
+def getSync():
+    return sync
 
 def getToken(username, password):
     response = requests.post(constants.server_url + '/api-token-auth/', {'username': username, 'password' : password})
@@ -73,25 +87,40 @@ if __name__ == '__main__':
 
     mySync = None
 
+    #make ~/onedir if it doesn't exist
+    try:
+        os.makedirs(os.getenv("HOME") + '/onedir')
+    except OSError as e:
+        pass
+
+    #start filemonitor in the background
+    subprocess.call("python filemonitor.py &", shell=True)
+
     if len(sys.argv) <= 1:
-        print 'main.py <sync>'
+        print '*auto synchronization = 0 or 1: main.py <sync>'
     else:
         if sys.argv[1] == 0:
             print 'Auto synchronization off.'
         if sys.argv[1] == 1:
             print 'Auto synchronization on.'
-            global sync
-            sync = True
+            syncOn()
 
     try:
         print constants.p_welcome
-        input = raw_input('Enter 0 to login or 1 to register: ')
-        while input != '0' and input != '1':
+        input = raw_input('Enter 1 to login or 2 to register: ')
+
+	# Check for exit
+        if input == '0':
+	    print constants.p_goodbye
+            exit()
+
+        while input != '1' and input != '2':
             print constants.indent(constants.p_incorrect_input)
-            input = raw_input('Enter 0 to login or 1 to register: ')
+            input = raw_input('Enter 1 to login or 2 to register: ')
+
 
         # Login
-        if input == '0':
+        if input == '1':
             while True:
                 un = raw_input('Username: ')
                 pw = getpass.getpass()
@@ -103,7 +132,7 @@ if __name__ == '__main__':
                 print constants.indent(constants.p_login_fail)
 
         # Register. Run main.py on command prompt because password prompts don't work in IDE.
-        if input == '1':
+        if input == '2':
             while True:
                 un = raw_input('Username: ')
                 email = raw_input('Email: ')
@@ -119,10 +148,10 @@ if __name__ == '__main__':
                     print constants.indent(constants.p_passwords_dont_match)
 
         while (True):
-            input2 = raw_input('Enter 1 to view files or 2 to change password: ')
-            while input2 != '0' and input2 != '1' and input2 != '2' and input2 != '8' and input2 != '9':
+            input2 = raw_input('Enter 1 to view files, 2 to change password, or 3 to turn auto sync on/off: ')
+            while input2 != '0' and input2 != '1' and input2 != '2' and input2 != '3' and input2 != '8' and input2 != '9':
                 print constants.indent(constants.p_incorrect_input)
-                input2 = raw_input('Enter 1 to view files or 2 to change password: ')
+                input2 = raw_input('Enter 1 to view files, 2 to change password, or 3 to turn auto sync on/off: ')
 
             # Check for exit
             if input2 == '0':
@@ -147,10 +176,18 @@ if __name__ == '__main__':
                     new_pw2 = getpass.getpass('Confirm new password: ')
                 passwordchange(old_pw, new_pw, un)
 
+            # Auto sync
+            if input2 == '3':
+                if sync:
+                    print 'Auto synchronization off.'
+                    syncOff()
+                else:
+                    print 'Auto synchronization on.'
+                    syncOn()
+                    mySync.check_server()
 
-
-            if input2 == '9':
-                mySync.upload_file('anivia2.mp3')
+        if input2 == '9':
+            mySync.upload_file('anivia2.mp3')
 
     except KeyboardInterrupt:
         print constants.p_goodbye
