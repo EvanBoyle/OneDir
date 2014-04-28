@@ -10,6 +10,7 @@ sys.path.append("..")
 import constants
 import sys
 import getopt
+import os
 token = ''
 sync = False
 
@@ -81,8 +82,17 @@ if __name__ == '__main__':
 
     mySync = None
 
+    #make ~/onedir if it doesn't exist
+    try:
+        os.mkdir('~/onedir')
+        print 'dir made'
+    except OSError as e:
+        print e
+        print 'dir not made'
+        pass
+
     if len(sys.argv) <= 1:
-        print 'main.py <sync>'
+        print '*auto synchronization = 0 or 1: main.py <sync>'
     else:
         if sys.argv[1] == 0:
             print 'Auto synchronization off.'

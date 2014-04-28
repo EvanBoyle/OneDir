@@ -26,17 +26,14 @@ class FileHandler(FileSystemEventHandler):
                 filename = event.src_path.replace("\\\\", "\\")
                 size = os.stat(filename).st_size
         # print event.src_path + ": " + str(size) + " " + event.event_type
-        basepath = os.path.dirname(__file__)
-        logfilepath = os.path.abspath(os.path.join(basepath, "..", "clientLog.json"))
-        # gets path relative to OneDir/Server/Files/. This means users are not allowed to create directories called OneDir!
-        filepath = event.src_path[event.src_path.rfind('OneDir')+20:]
+        logfilepath = "clientLog.json"
+        # gets path relative to ~/onedir. This means users are not allowed to create directories called onedir!
+        filepath = event.src_path[event.src_path.rfind('onedir')+7:]
 
         if '___' not in event.src_path and (size != -1 or event.event_type == "deleted"):
             f = open(logfilepath, "a")
             f.writelines(json.dumps({'file': filepath, 'size': size, 'event': event.event_type, 'time': file_time}, sort_keys=True))
             f.writelines("\n")
-        #check_local()
-        #check_server()
 
     def on_any_event(self, event):
         self.process(event)
@@ -44,7 +41,7 @@ class FileHandler(FileSystemEventHandler):
 
 if __name__ == '__main__':
 
-    path_name = '../Server/Files'
+    path_name = '~/onedir'
     # print os.path.exists(os.path.dirname(path_name))
     observer = Observer()
     observer.schedule(FileHandler(), path=path_name, recursive=True)
