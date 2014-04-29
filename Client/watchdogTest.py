@@ -30,11 +30,13 @@ def renameFile(name, newName):
 
 if __name__=='__main__':
 
-    # createFile("test8.txt")
+    createFile("tired.txt")
     time.sleep(2)
-    # editFile("test2.txt", "yayyyy download works")
-    # renameFile("test2.txt", "test_rename.txt")
-    # deleteFile("test_rename4.txt")
+    editFile("test6.txt", "So MANY TESTS")
+    time.sleep(2)
+    renameFile("test_rename.txt", "test2.txt")
+    time.sleep(2)
+    deleteFile("test7.txt")
     time.sleep(2)
     # makeDir("testdir")
     time.sleep(2)
