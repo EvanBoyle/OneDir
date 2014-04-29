@@ -92,8 +92,12 @@ class LoggingEventHandler(FileSystemEventHandler):
         filepath = event.dest_path[event.dest_path.rfind('onedir')+7:]
         filename = event.dest_path.replace("\\\\", "\\")
         size = os.stat(filename).st_size
+        old_filepath = event.src_path[event.dest_path.rfind('onedir')+7:]
+        old_filename = event.src_path.replace("\\\\", "\\")
         logfilepath = "./clientLog.json"
         f = open(logfilepath, "a")
+        f.writelines(json.dumps({'file': old_filepath, 'size': -1, 'event': event.event_type, 'time': file_time}, sort_keys=True))
+        f.writelines("\n")
         f.writelines(json.dumps({'file': filepath, 'size': size, 'event': event.event_type, 'time': file_time}, sort_keys=True))
         f.writelines("\n")
 
